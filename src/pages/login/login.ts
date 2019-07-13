@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { TimelinePage } from '../timeline/timeline';
 import { BemVindoAoOrkut2Page } from '../bem-vindo-ao-orkut2/bem-vindo-ao-orkut2';
+import { TabsControllerPage } from '../tabs-controller/tabs-controller';
 
 @Component({
   selector: 'page-login',
@@ -12,9 +13,9 @@ export class LoginPage {
   // should be each tab's root Page
   constructor(public navCtrl: NavController) {
   }
-  goToTimeline(params){
+  goToTabsControllerPage(params){
     if (!params) params = {};
-    this.navCtrl.push(TimelinePage);
+    this.navCtrl.push(TabsControllerPage);
   }
   
   goToBemVindoAoOrkut2(params){
