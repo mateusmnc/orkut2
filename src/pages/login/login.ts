@@ -15,7 +15,9 @@ export class LoginPage {
   goToTimeline(params){
     if (!params) params = {};
     this.navCtrl.push(TimelinePage);
-  }goToBemVindoAoOrkut2(params){
+  }
+  
+  goToBemVindoAoOrkut2(params){
     if (!params) params = {};
     this.navCtrl.push(BemVindoAoOrkut2Page);
   }
