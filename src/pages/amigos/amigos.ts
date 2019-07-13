@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { PesquisarAmigosPage } from '../pesquisar-amigos/pesquisar-amigos';
 
 @Component({
   selector: 'page-amigos',
@@ -11,4 +12,8 @@ export class AmigosPage {
   constructor(public navCtrl: NavController) {
   }
   
+  goToPesquisarAmigosPage(params){
+    if (!params) params = {};
+    this.navCtrl.push(PesquisarAmigosPage);
+  }
 }
