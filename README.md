@@ -3,4 +3,4 @@
     de NovoPost para Timeline após publicar há empilhamento
     de Signup para login há o empilhamento também
 
-- [] Limpar Icones de voltar (back arrows) quando não é necessário
+- [X] Limpar Icones de voltar (back arrows) quando não é necessário
