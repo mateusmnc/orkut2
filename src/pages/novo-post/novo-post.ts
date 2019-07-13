@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { TimelinePage } from '../timeline/timeline';
 
 @Component({
   selector: 'page-novo-post',
@@ -11,4 +12,13 @@ export class NovoPostPage {
   constructor(public navCtrl: NavController) {
   }
   
+  publicarPost(params){
+    if (!params) params = {};
+    this.goToTimelinePage(params);
+  }
+
+  goToTimelinePage(params){
+    if (!params) params = {};
+    this.navCtrl.push(TimelinePage);
+  }
 }
