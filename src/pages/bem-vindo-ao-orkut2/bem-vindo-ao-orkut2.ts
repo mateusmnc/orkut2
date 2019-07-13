@@ -14,6 +14,6 @@ export class BemVindoAoOrkut2Page {
   
   goToLoginPage(params){
     if (!params) params = {};
-    this.navCtrl.push(LoginPage);
+    this.navCtrl.setRoot(LoginPage);
   }
 }

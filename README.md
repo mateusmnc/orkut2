@@ -1,5 +1,6 @@
 ## Tarefas a fazer
-- [] Evitar o empilhamento de quando se navega de páginas single use
+- [X] Evitar o empilhamento de quando se navega de páginas single use
     de NovoPost para Timeline após publicar há empilhamento
     de Signup para login há o empilhamento também
-    
+
+- [] Limpar Icones de voltar (back arrows) quando não é necessário
