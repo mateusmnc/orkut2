@@ -28,16 +28,14 @@ export class LoginPage {
 
   login(){
     if(this.auth.login(this.loginForm.value.email, this.loginForm.value.senha)){
-      this.goToTabsControllerPage(null);
+      this.goToTabsControllerPage();
     }
   }
-  goToTabsControllerPage(params){
-    if (!params) params = {};
+  goToTabsControllerPage(){
     this.navCtrl.push(TabsControllerPage);
   }
   
-  goToBemVindoAoOrkut2(params){
-    if (!params) params = {};
+  goToBemVindoAoOrkut2(){
     this.navCtrl.push(BemVindoAoOrkut2Page);
   }
 }
