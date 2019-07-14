@@ -25,4 +25,14 @@ export class AuthProvider {
     }
     return true;
   }
+
+  signUp(signUpForm): boolean {
+    if(USERS.filter(user => user.email == signUpForm.email)[0] != null){
+      console.log("já existe, id: " + USERS.filter(user => user.email == signUpForm.email && user.senha == signUpForm.senha)[0].id);
+      return false;
+    }
+    USERS.push(new User(USERS.length, signUpForm.nome, signUpForm.email, signUpForm.senha));
+    console.log(USERS);
+    return true;
+  }
 }
