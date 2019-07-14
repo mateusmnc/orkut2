@@ -1,19 +1,40 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
+import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { AuthProvider } from '../../providers/auth/auth';
 
 @Component({
   selector: 'page-bem-vindo-ao-orkut2',
   templateUrl: 'bem-vindo-ao-orkut2.html'
 })
 export class BemVindoAoOrkut2Page {
-  // this tells the tabs component which Pages
-  // should be each tab's root Page
-  constructor(public navCtrl: NavController) {
+  
+  public signUpForm: FormGroup;
+
+  constructor(
+    public navCtrl: NavController,
+    private auth: AuthProvider,
+    private formBuilder: FormBuilder) {
+
+    this.signUpForm = this.formBuilder.group({
+      nome:['', Validators.compose([Validators.required])],
+      email:['', Validators.compose([Validators.required, Validators.email])],
+      senha:['', Validators.compose([Validators.required])]
+    });
   }
   
-  goToLoginPage(params){
-    if (!params) params = {};
+  criarConta(){
+    if(!this.signUpForm.valid){
+      return;
+    }
+    if(!this.auth.signUp(this.signUpForm.value)){
+      return;
+    }
+    this.goToLoginPage();
+  }
+
+  goToLoginPage(){
     this.navCtrl.setRoot(LoginPage);
   }
 }
