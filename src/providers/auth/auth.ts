@@ -12,15 +12,17 @@ import { User } from '../../entities/user';
 export class AuthProvider {
 
   private currentUser: User;
-  constructor(public http: HttpClient) {
+  // constructor(public http: HttpClient) {
+  constructor() {
     console.log('Hello AuthProvider Provider');
   }
 
   login(email: string, senha: string):boolean {
     this.currentUser = USERS.filter( user => user.email == email && user.senha == senha)[0];
-    if(this.currentUser.id != 0){
-      return true;
+    
+    if(this.currentUser == null){
+      return false;
     }
-    return false;
+    return true;
   }
 }
