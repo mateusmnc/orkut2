@@ -6,6 +6,7 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { USERS } from '../../mockdata/mock-users';
 import { User } from '../../entities/user';
 import { Post } from '../../entities/post';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'page-novo-post',
@@ -26,6 +27,7 @@ export class NovoPostPage {
     this.user = USERS[3];
     
     this.post = new Post();
+    this.post.uuid = uuid();
     this.post.communicatorUserId = this.user.id;
     this.post.authorUserId = this.user.id;
   }
@@ -36,7 +38,7 @@ export class NovoPostPage {
     this.post.text = this.postText;
     this.post.img = this.imgSrc;
     this.post.visibility = this.postStatus;
-
+    console.log(this.post);
     this.goToTimelinePage(params);
 
   }
