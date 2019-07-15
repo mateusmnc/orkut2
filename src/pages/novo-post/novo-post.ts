@@ -7,6 +7,7 @@ import { USERS } from '../../mockdata/mock-users';
 import { User } from '../../entities/user';
 import { Post } from '../../entities/post';
 import { v4 as uuid } from 'uuid';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Component({
   selector: 'page-novo-post',
@@ -22,7 +23,10 @@ export class NovoPostPage {
   private postStatusText: string = "compartilhável";
   private postStatus: boolean = true;
   private post: Post;
-  constructor(public navCtrl: NavController, private auth: AuthProvider) {
+  constructor(
+    public navCtrl: NavController, 
+    private auth: AuthProvider,
+    private db: AngularFireDatabase) {
     // this.user = this.auth.getCurrentUser();
     this.user = USERS[3];
     
@@ -39,6 +43,9 @@ export class NovoPostPage {
     this.post.img = this.imgSrc;
     this.post.visibility = this.postStatus;
     console.log(this.post);
+    // const itemRef = this.db.object(`posts/${this.post.communicatorUserId}/${this.post.uuid}`);
+    const itemRef = this.db.list(`posts/${this.post.communicatorUserId}/`);
+    itemRef.push(this.post);
     this.goToTimelinePage(params);
 
   }
@@ -68,4 +75,6 @@ export class NovoPostPage {
       this.postStatusText = "compartilhável";
     }
   }
+
+  
 }
