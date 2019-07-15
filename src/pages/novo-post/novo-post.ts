@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { TimelinePage } from '../timeline/timeline';
 import { TabsControllerPage } from '../tabs-controller/tabs-controller';
+import { AuthProvider } from '../../providers/auth/auth';
+import { USERS } from '../../mockdata/mock-users';
+import { User } from '../../entities/user';
 
 @Component({
   selector: 'page-novo-post',
@@ -13,8 +16,12 @@ export class NovoPostPage {
 
   private postText: string;
   private imgSrc: string ='';
-
-  constructor(public navCtrl: NavController) {}
+  private user: User;
+  private postStatus: string = "compartilhável";
+  constructor(public navCtrl: NavController, private auth: AuthProvider) {
+    // this.user = this.auth.getCurrentUser();
+    this.user = USERS[3];
+  }
   
   publicarPost(params){
     if (!params) params = {};
@@ -27,9 +34,24 @@ export class NovoPostPage {
     this.navCtrl.setRoot(TabsControllerPage);
   }
 
+  getProfilePic(){
+    return this.user.pic;
+  }
+
+  getName(){
+    return this.user.nome;
+  }
   onChange($event){
     this.imgSrc = $event;
   }
 
+  changeStatus($event){
+    if($event.checked == false){
+      this.postStatus = "privado";
+      return;
+    }
 
+    this.postStatus = "compartilhável";
+
+  }
 }

@@ -17,6 +17,9 @@ export class AuthProvider {
     console.log('Hello AuthProvider Provider');
   }
 
+  getCurrentUser(){
+    return this.currentUser;
+  }
   login(email: string, senha: string):boolean {
     this.currentUser = USERS.filter( user => user.email == email && user.senha == senha)[0];
     
