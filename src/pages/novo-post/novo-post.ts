@@ -12,6 +12,8 @@ export class NovoPostPage {
   // should be each tab's root Page
 
   private postText: string;
+  private imgSrc: string ='';
+
   constructor(public navCtrl: NavController) {}
   
   publicarPost(params){
@@ -24,4 +26,10 @@ export class NovoPostPage {
     if (!params) params = {};
     this.navCtrl.setRoot(TabsControllerPage);
   }
+
+  onChange($event){
+    this.imgSrc = $event;
+  }
+
+
 }
