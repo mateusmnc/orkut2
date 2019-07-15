@@ -18,9 +18,11 @@ export class NovoPostPage {
   private imgSrc: string ='';
   private user: User;
   private postStatus: string = "compartilhável";
+
   constructor(public navCtrl: NavController, private auth: AuthProvider) {
     // this.user = this.auth.getCurrentUser();
     this.user = USERS[3];
+
   }
   
   publicarPost(params){
