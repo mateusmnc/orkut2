@@ -10,10 +10,14 @@ import { BemVindoAoOrkut2Page } from '../pages/bem-vindo-ao-orkut2/bem-vindo-ao-
 import { NovoPostPage } from '../pages/novo-post/novo-post';
 import { PesquisarAmigosPage } from '../pages/pesquisar-amigos/pesquisar-amigos';
 
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth/auth';
+
+import { FIREBASE_CONFIG } from './firebase.config';
+// import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,9 @@ import { AuthProvider } from '../providers/auth/auth';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    AngularFireModule.initializeApp(FIREBASE_CONFIG),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
