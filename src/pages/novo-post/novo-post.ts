@@ -43,9 +43,8 @@ export class NovoPostPage {
     this.post.img = this.imgSrc;
     this.post.visibility = this.postStatus;
     console.log(this.post);
-    // const itemRef = this.db.object(`posts/${this.post.communicatorUserId}/${this.post.uuid}`);
-    const itemRef = this.db.list(`posts/${this.post.communicatorUserId}/`);
-    itemRef.push(this.post);
+    const itemRef = this.db.object(`posts/${this.post.communicatorUserId}/${this.post.uuid}`);
+    itemRef.set(this.post);
     this.goToTimelinePage(params);
 
   }
