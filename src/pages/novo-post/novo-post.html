@@ -22,13 +22,13 @@
         <ion-item no-lines>
             <img src='{{imgSrc}}' style="display:block;width:100%;height:auto;" />
         </ion-item>
-        <ion-item>
-            <ion-label text-right>{{postStatus}}</ion-label>
-            <ion-toggle slot="start" name="postStatus" checked (ionChange)="changeStatus($event)"></ion-toggle>
-        </ion-item>
     </ion-list>
     <ion-footer>
         <ion-toolbar position="bottom">
+            <ion-item>
+                <ion-label text-right>{{postStatus}}</ion-label>
+                <ion-toggle slot="start" name="postStatus" checked (ionChange)="changeStatus($event)"></ion-toggle>
+            </ion-item>
             <ion-item>
                 <ion-label>Fotos</ion-label>
                 <ion-select interface="popover" (ionChange)="onChange($event)">
