@@ -1,4 +1,5 @@
 export class Post {
+    uuid: string;
     communicatorUserId: number;
     communicatorUserName: string;
     authorUserId: number;
