@@ -31,7 +31,7 @@ export class AuthProvider {
       console.log("já existe, id: " + USERS.filter(user => user.email == signUpForm.email && user.senha == signUpForm.senha)[0].id);
       return false;
     }
-    USERS.push(new User(USERS.length, signUpForm.nome, signUpForm.email, signUpForm.senha));
+    USERS.push(new User(USERS.length, signUpForm.nome, signUpForm.email, signUpForm.senha, 'assets/img/profile/coragem.jpg'));
     console.log(USERS);
     return true;
   }
