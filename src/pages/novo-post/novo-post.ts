@@ -10,11 +10,14 @@ import { TabsControllerPage } from '../tabs-controller/tabs-controller';
 export class NovoPostPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
+
+  private postText: string;
   constructor(public navCtrl: NavController) {
   }
   
   publicarPost(params){
     if (!params) params = {};
+    console.log(this.postText);
     this.goToTimelinePage(params);
   }
 
