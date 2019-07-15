@@ -12,4 +12,5 @@ export class User {
       this.senha = senha;
       this.pic = pic;
     }
+
   }
