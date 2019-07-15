@@ -12,8 +12,7 @@ export class NovoPostPage {
   // should be each tab's root Page
 
   private postText: string;
-  constructor(public navCtrl: NavController) {
-  }
+  constructor(public navCtrl: NavController) {}
   
   publicarPost(params){
     if (!params) params = {};
