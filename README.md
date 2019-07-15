@@ -7,4 +7,4 @@
 
 - [ ] Adicionar toast messages quando o signup ou login não tem sucesso
 
-- [ ] Adicionar submissão do post para o serviço externo
+- [ ] Adicionar submissão do post para o serviço externo, incluindo image source
