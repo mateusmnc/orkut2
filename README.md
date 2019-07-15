@@ -6,3 +6,5 @@
 - [X] Limpar Icones de voltar (back arrows) quando não é necessário
 
 - [ ] Adicionar toast messages quando o signup ou login não tem sucesso
+
+- [ ] Adicionar submissão do post para o serviço externo
