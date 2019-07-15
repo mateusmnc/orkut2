@@ -5,6 +5,7 @@ import { TabsControllerPage } from '../tabs-controller/tabs-controller';
 import { AuthProvider } from '../../providers/auth/auth';
 import { USERS } from '../../mockdata/mock-users';
 import { User } from '../../entities/user';
+import { Post } from '../../entities/post';
 
 @Component({
   selector: 'page-novo-post',
@@ -17,18 +18,27 @@ export class NovoPostPage {
   private postText: string;
   private imgSrc: string ='';
   private user: User;
-  private postStatus: string = "compartilhável";
-
+  private postStatusText: string = "compartilhável";
+  private postStatus: boolean = true;
+  private post: Post;
   constructor(public navCtrl: NavController, private auth: AuthProvider) {
     // this.user = this.auth.getCurrentUser();
     this.user = USERS[3];
-
+    
+    this.post = new Post();
+    this.post.communicatorUserId = this.user.id;
+    this.post.authorUserId = this.user.id;
   }
   
   publicarPost(params){
     if (!params) params = {};
-    console.log(this.postText);
+    
+    this.post.text = this.postText;
+    this.post.img = this.imgSrc;
+    this.post.visibility = this.postStatus;
+
     this.goToTimelinePage(params);
+
   }
 
   goToTimelinePage(params){
@@ -48,12 +58,12 @@ export class NovoPostPage {
   }
 
   changeStatus($event){
-    if($event.checked == false){
-      this.postStatus = "privado";
-      return;
+    this.postStatus = $event.checked;
+    if(this.postStatus == false){
+      this.postStatusText = "privado";
+    } 
+    else {
+      this.postStatusText = "compartilhável";
     }
-
-    this.postStatus = "compartilhável";
-
   }
 }
