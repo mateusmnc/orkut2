@@ -1,36 +1,23 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            Pesquisar Amigos
+            Adicionar Amigos
         </ion-title>
+        <!-- <ion-searchbar placeholder="Pesquisar amigos" name="" id="pesquisarAmigos-search1" showCancelButton="true"></ion-searchbar> -->
     </ion-navbar>
 </ion-header>
 <ion-content padding id="page8">
     <ion-list id="pesquisarAmigos-list7">
-        <ion-searchbar placeholder="" name="" id="pesquisarAmigos-search1"></ion-searchbar>
-        <ion-item color="none" id="pesquisarAmigos-list-item19">
-            <ion-avatar item-left>
-                <img src="assets/img/J743vMf7RweVr8xyzocx_blackCapybara.png" />
-            </ion-avatar>
-            <h2>
-                Luis Suarez
-            </h2>
-        </ion-item>
-        <ion-item color="none" id="pesquisarAmigos-list-item20">
-            <ion-avatar item-left>
-                <img />
-            </ion-avatar>
-            <h2>
-                Item
-            </h2>
-        </ion-item>
-        <ion-item color="none" id="pesquisarAmigos-list-item21">
-            <ion-avatar item-left>
-                <img />
-            </ion-avatar>
-            <h2>
-                Item
-            </h2>
-        </ion-item>
+        <div *ngFor="let user of friendsToAdd; let i = index">
+            <ion-item color="none" id="pesquisarAmigos-list-item19">
+                <ion-avatar item-left>
+                    <img src="{{user?.pic}}" />
+                </ion-avatar>
+                <h2>{{user?.nome}}</h2>
+                <button ion-button (click)="addPerson(user?.id)" item-right>
+                    <ion-icon name="person-add"></ion-icon>
+                </button>
+            </ion-item>
+        </div>
     </ion-list>
 </ion-content>
