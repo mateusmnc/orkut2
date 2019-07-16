@@ -12,37 +12,16 @@
 </ion-header>
 <ion-content padding id="page4">
     <ion-list id="amigos-list6">
-        <ion-item color="none" id="amigos-list-item15">
-            <ion-avatar item-left>
-                <img src="assets/img/Pnd7lGESR0yg7Wl0KwB3_blackCapybara.png" />
-            </ion-avatar>
-            <h2>
-                Luis Suarez
-            </h2>
-        </ion-item>
-        <ion-item color="none" id="amigos-list-item16">
-            <ion-avatar item-left>
-                <img />
-            </ion-avatar>
-            <h2>
-                Item
-            </h2>
-        </ion-item>
-        <ion-item color="none" id="amigos-list-item17">
-            <ion-avatar item-left>
-                <img />
-            </ion-avatar>
-            <h2>
-                Item
-            </h2>
-        </ion-item>
-        <ion-item color="none" id="amigos-list-item18">
-            <ion-avatar item-left>
-                <img />
-            </ion-avatar>
-            <h2>
-                Item
-            </h2>
-        </ion-item>
+        <div *ngFor="let user of friendsToDisplay | async; let i = index">
+            <ion-item color="none" id="pesquisarAmigos-list-item19">
+                <ion-avatar item-left>
+                    <img src="{{user?.pic}}" />
+                </ion-avatar>
+                <h2>{{user?.nome}}</h2>
+                <button ion-button (click)="removeFriend(user?.id)" item-right>
+                excluir
+            </button>
+            </ion-item>
+        </div>
     </ion-list>
 </ion-content>
