@@ -3,25 +3,68 @@ import { NavController } from 'ionic-angular';
 import { NovoPostPage } from '../novo-post/novo-post';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Post } from '../../entities/post';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
+import { AuthProvider } from '../../providers/auth/auth';
+import { USERS } from '../../mockdata/mock-users';
+import { User } from '../../entities/user';
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'page-timeline',
   templateUrl: 'timeline.html'
 })
 export class TimelinePage {
-  // this tells the tabs component which Pages
-  // should be each tab's root Page
-  // items: Observable<{}[]>;
-  constructor(public navCtrl: NavController, private db: AngularFireDatabase) {
-    // this.items = this.db.list('/posts/3').valueChanges();
-    // this.items.subscribe(posts => {
-    //   posts.forEach( (post, index) => {
-    //     console.log(post);
-    //   });
-    // });
+  postSubscription: Subscription;
+  postList: Observable<any[]>;
+  postRef: Observable<unknown[]>;
+  friendsRef: Observable<any[]>;
+  friendSubscription: Subscription;
+  myfriends: Observable<User[]>;
+  
+  constructor(
+    public navCtrl: NavController, 
+    private db: AngularFireDatabase, 
+    private auth: AuthProvider) {
+    
+    this.postRef = this.db.list('/posts/').valueChanges();
+    this.friendsRef = this.db.list('friends/' + this.auth.getCurrentUser().id).valueChanges();
+    
+    this.friendSubscription = this.friendsRef.subscribe(friendObjects=> {
+      let friends = this.loadCurrentFriends(friendObjects);
+
+      this.postSubscription = this.postRef.subscribe(userPosts => {
+        let flatPosts: Post[] = new Array<Post>();
+        Object.values(userPosts).forEach( postWithKey => {
+          Object.values(postWithKey).forEach( post => {
+            if(friends.filter(f => f.id == post.communicatorUserId).length > 0) {
+              post.user = friends[friends.findIndex(u => u.id == post.communicatorUserId)];             
+              flatPosts.push(post);
+              this.postList = of(flatPosts);
+            }
+          });
+        });
+      });
+    });
   }
   
+  private loadCurrentFriends(friends): User[] {
+    let idList = new Array();
+    friends.forEach(friend => idList.push(friend.id));
+    return USERS.filter(ftd => idList.includes(ftd.id));
+  }
+
+  share(authorUserId, uuid){
+    let newSharedPost = this.db
+      .object(`/posts/${authorUserId}/${uuid}`)
+      .valueChanges().subscribe( obj => {
+        obj['communicatorUserId'] = this.auth.getCurrentUser().id;
+        obj['communicatorUserName'] = this.auth.getCurrentUser().nome;
+        this.db
+        .object(`/posts/${this.auth.getCurrentUser().id}/${uuid}`)
+        .set(obj);
+      });
+  }
+
   goToNovoPostPage(params){
     if (!params) params = {};
     this.navCtrl.push(NovoPostPage);

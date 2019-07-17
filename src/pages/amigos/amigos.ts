@@ -25,13 +25,7 @@ export class AmigosPage {
   
   private buildAmigosList(): (value: any[]) => void {
     return friendsList => {
-      console.log("friendlis");
-      console.log(friendsList);
-      friendsList.forEach(friend => {
-        console.log("friend:::");
-        console.log(friend);
-        this.idList.push(friend.id);
-      });
+      friendsList.forEach(friend => {this.idList.push(friend.id);});
       this.friendsToDisplay = of(USERS.filter(ftd => this.idList.includes(ftd.id)));
     };
   }

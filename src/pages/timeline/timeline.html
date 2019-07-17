@@ -12,29 +12,32 @@
 </ion-header>
 <ion-content padding id="page2">
     <ion-list id="timeline-list8">
-        <ion-item color="none" id="timeline-list-item7">
-            <ion-avatar item-left>
-                <img src="assets/img/ncKPdNrTyyid0W9Wrftx_blackCapybara.png" />
-            </ion-avatar>
-            <h2>
-                John Doe
-            </h2>
-        </ion-item>
-        <ion-item color="none" id="timeline-list-item8">
-            <ion-avatar item-left>
-                <img />
-            </ion-avatar>
-            <h2>
-                Joana Wichmann
-            </h2>
-        </ion-item>
-        <ion-item color="none" id="timeline-list-item9">
-            <ion-avatar item-left>
-                <img />
-            </ion-avatar>
-            <h2>
-                Item
-            </h2>
-        </ion-item>
+        <div *ngFor="let p of postList | async; let i = index">
+
+            <ion-item color="none" no-lines>
+                <ion-avatar item-left>
+                    <img src="{{p?.user.pic}}" />
+                </ion-avatar>
+                <h1 style="color:steelblue">{{p?.user.nome}}</h1>
+                <label style="color:steelblue" text-wrap>{{p?.text}}</label>
+                <!-- <ion-textarea value="{{p?.text}}" rows="5" style="color:navy; border-style: none" disabled></ion-textarea> -->
+            </ion-item>
+            <div *ngIf="p?.img != '' ">
+                <ion-item no-lines>
+                    <img src="{{p?.img}}" style="display: block; margin:auto; border-radius:15px" />
+                </ion-item>
+            </div>
+            <div *ngIf="p?.visibility == true">
+                <ion-item no-lines>
+                    <button style="margin-left: 10px" ion-button (click)="share(p?.authorUserId, p?.uuid)" item-left>
+                        <ion-icon name="share"></ion-icon>
+                    </button>
+                    <div *ngIf="p?.communicatorUserId != p?.authorUserId" item-right>
+                        <h4 style="color:purple; margin-top: 8px; font-style: italic; font-display: bold; " item-right>por {{p?.authorUserName}}</h4>
+                    </div>
+                </ion-item>
+            </div>
+            <hr style="background-color:steelblue; height:2px;">
+        </div>
     </ion-list>
 </ion-content>
