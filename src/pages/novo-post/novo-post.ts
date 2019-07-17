@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { TimelinePage } from '../timeline/timeline';
 import { TabsControllerPage } from '../tabs-controller/tabs-controller';
 import { AuthProvider } from '../../providers/auth/auth';
-import { USERS } from '../../mockdata/mock-users';
 import { User } from '../../entities/user';
 import { Post } from '../../entities/post';
 import { v4 as uuid } from 'uuid';
@@ -27,13 +25,14 @@ export class NovoPostPage {
     public navCtrl: NavController, 
     private auth: AuthProvider,
     private db: AngularFireDatabase) {
-    // this.user = this.auth.getCurrentUser();
-    this.user = USERS[3];
+    this.user = this.auth.getCurrentUser();
     
     this.post = new Post();
     this.post.uuid = uuid();
     this.post.communicatorUserId = this.user.id;
+    this.post.communicatorUserName = this.user.nome;
     this.post.authorUserId = this.user.id;
+    this.post.authorUserName = this.user.nome;
   }
   
   publicarPost(params){
@@ -51,6 +50,7 @@ export class NovoPostPage {
     this.post.text = this.postText;
     this.post.img = this.imgSrc;
     this.post.visibility = this.postStatus;
+    this.post.timestamp = Date.now();
     console.log(this.post);
   }
 

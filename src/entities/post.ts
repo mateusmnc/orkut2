@@ -7,5 +7,6 @@ export class Post {
     text: string;
     img: string;
     visibility: boolean;
+    timestamp: number;
 }
 
