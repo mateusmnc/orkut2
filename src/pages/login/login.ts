@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { TimelinePage } from '../timeline/timeline';
 import { BemVindoAoOrkut2Page } from '../bem-vindo-ao-orkut2/bem-vindo-ao-orkut2';
 import { TabsControllerPage } from '../tabs-controller/tabs-controller';
 import { AuthProvider } from '../../providers/auth/auth';

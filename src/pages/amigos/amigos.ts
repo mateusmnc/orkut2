@@ -6,7 +6,6 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { Observable, of, Subscription } from 'rxjs';
 import { User } from '../../entities/user';
 import { USERS } from '../../mockdata/mock-users';
-import { _keyValueDiffersFactory } from '@angular/core/src/application_module';
 
 @Component({
   selector: 'page-amigos',

@@ -7,7 +7,6 @@ import { Observable, Subscription, of } from 'rxjs';
 import { AuthProvider } from '../../providers/auth/auth';
 import { USERS } from '../../mockdata/mock-users';
 import { User } from '../../entities/user';
-import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'page-timeline',
@@ -16,7 +15,7 @@ import { threadId } from 'worker_threads';
 export class TimelinePage {
   postSubscription: Subscription;
   postList: Observable<any[]>;
-  postRef: Observable<unknown[]>;
+  postRef: Observable<any[]>;
   friendsRef: Observable<any[]>;
   friendSubscription: Subscription;
   myfriends: Observable<User[]>;
@@ -34,8 +33,8 @@ export class TimelinePage {
 
       this.postSubscription = this.postRef.subscribe(userPosts => {
         let flatPosts: Post[] = new Array<Post>();
-        Object.values(userPosts).forEach( postWithKey => {
-          Object.values(postWithKey).forEach( post => {
+        Object.keys(userPosts).map(key => userPosts[key]).forEach( postWithKey => {
+          Object.keys(postWithKey).map(key => postWithKey[key]).forEach( post => {
             if(friends.filter(f => f.id == post.communicatorUserId).length > 0) {
               post.user = friends[friends.findIndex(u => u.id == post.communicatorUserId)];             
               flatPosts.push(post);
@@ -54,7 +53,7 @@ export class TimelinePage {
   }
 
   share(authorUserId, uuid){
-    let newSharedPost = this.db
+    this.db
       .object(`/posts/${authorUserId}/${uuid}`)
       .valueChanges().subscribe( obj => {
         obj['communicatorUserId'] = this.auth.getCurrentUser().id;
