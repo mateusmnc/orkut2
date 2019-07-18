@@ -18,7 +18,7 @@ export class NovoPostPage {
   private postText: string;
   private imgSrc: string ='';
   private user: User;
-  private postStatusText: string = "compartilhável";
+  public postStatusText: string = "compartilhável";
   private postStatus: boolean = true;
   private post: Post;
   constructor(
