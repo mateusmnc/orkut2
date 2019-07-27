@@ -12,5 +12,16 @@ export class User {
       this.senha = senha;
       this.pic = pic;
     }
+}
 
+export interface UserResponse{
+  result?: {
+    email?: string;
+    uuid?: string;
+  };
+
+  error?: {
+    code?: string;
+    message?: string;
   }
+}
