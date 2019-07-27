@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth/auth';
+import { User } from '../../entities/user';
 
 @Component({
   selector: 'page-bem-vindo-ao-orkut2',
@@ -18,9 +19,9 @@ export class BemVindoAoOrkut2Page {
     private formBuilder: FormBuilder) {
 
     this.signUpForm = this.formBuilder.group({
-      nome:['', Validators.compose([Validators.required])],
+      name:['', Validators.compose([Validators.required])],
       email:['', Validators.compose([Validators.required, Validators.email])],
-      senha:['', Validators.compose([Validators.required])]
+      password:['', Validators.compose([Validators.required])]
     });
   }
   
@@ -28,10 +29,17 @@ export class BemVindoAoOrkut2Page {
     if(!this.signUpForm.valid){
       return;
     }
-    if(!this.auth.signUp(this.signUpForm.value)){
+    let newUser:User = this.createUserFromForm(this.signUpForm.value);
+    
+    if(!this.auth.signUp(newUser)){
       return;
     }
+
     this.goToLoginPage();
+  }
+
+  createUserFromForm(newUser): User {
+    return new User(null, newUser.name, newUser.email, newUser.password, null);
   }
 
   goToLoginPage(){
