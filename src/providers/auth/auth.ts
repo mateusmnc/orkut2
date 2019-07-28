@@ -13,41 +13,61 @@ export class AuthProvider {
 
   private user: User;
 
-  constructor(private afAuth: AngularFireAuth, private db: DatabaseProvider) {}
+  constructor(private afAuth: AngularFireAuth, private db: DatabaseProvider) {
+    // if(this.isUserSignedIn()){
+      // this.fillCurrentUser(this.afAuth.auth.currentUser);
+      // this.user = this.fetchCurrentUser(this.afAuth.auth.currentUser);
+    // }
+  }
 
-  getCurrentUser(){
+  async getCurrentUser(){
+    if(!this.isUserSignedIn()){
+      this.user = await this.fetchCurrentUser(this.afAuth.auth.currentUser);
+    }
     return this.user;
   }
 
   async login(user: User) {
+    let userCredential = await this.afAuth.auth.signInWithEmailAndPassword(user.email, user.pwd);
+    this.user = await this.fetchCurrentUser(userCredential.user);
+        
+    // this.afAuth.auth.signInWithEmailAndPassword(user.email, user.pwd).then(
+    //   userCredential =>{
+    //     this.fillCurrentUser(userCredential.user);
+    //   }, 
+    //   error =>{
+    //     console.log("Error during login");
+    //     console.log(error);
+    //   }
+    // );
 
-    // this.user = USERS.filter( user => user.email == email && user.senha == senha)[0];
-    
-    // if(this. == null){
-      // return false;
-    // }
-    return true;
+  // }
+  // private fillCurrentUser(fireUser: firebase.User) {
+  //   this.user = this.db.getUserByUid(fireUser.uid);
+  // }
   }
-  async isUserSignedIn(){
-    if(this.afAuth.auth.currentUser != null){
-      console.log("user is logged in");
-      console.log(this.afAuth.auth)
-      return true;
-    }
+  private async fetchCurrentUser(fireUser: firebase.User): Promise<User> {
+    return await this.db.getUserByUid(fireUser.uid);
+  }
+
+  isUserSignedIn(){
+    console.log("isUserSignedIn");
+    console.log(this.afAuth.auth.currentUser);
+    return this.afAuth.auth.currentUser != null;
   }
 
   async signUp(newUser: User) {
-    this.signUpAtFirebase(newUser).then(response => {
-      console.log(response);
+    this.signUpAtFirebase(newUser).then(userCredential => {
+      console.log(userCredential);
       
-      if(!response.additionalUserInfo.isNewUser){
+      if(!userCredential.additionalUserInfo.isNewUser){
         console.log("user already exists");
       }
 
       this.user = new User();
       this.user.name = newUser.name;
-      this.user.email = response.user.email;
-      this.user.uid = response.user.uid;
+      this.user.email = userCredential.user.email;
+      this.user.uid = userCredential.user.uid;
       this.db.saveNewUser(this.user)
       .then(
         result =>{

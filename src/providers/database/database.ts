@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../entities/user';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 
 /*
   Generated class for the DatabaseProvider provider.
@@ -11,9 +11,10 @@ import { AngularFireDatabase } from '@angular/fire/database';
 @Injectable()
 export class DatabaseProvider {
   
-  users = this.db.list<User>('users');
+  private users: AngularFireList<User>;
 
   constructor(private db: AngularFireDatabase) {
+    this.users = this.db.list<User>('users');
   }
 
   public async saveNewUser(newUser: User){
@@ -23,5 +24,16 @@ export class DatabaseProvider {
         newUser.userId = userCreated.key;
         this.users.update(userCreated.key, newUser);
     });
+  }
+
+  public getUserByUid(uid: string): User {
+    let user: User;
+    let usersUpdated = this.users.valueChanges().subscribe( userList => {
+      user = userList.filter(usr => usr.uid == uid)[0];
+    });
+    usersUpdated.unsubscribe();
+    console.log("userByUid: " + uid);
+    console.log(user);
+    return user;
   }
 }
