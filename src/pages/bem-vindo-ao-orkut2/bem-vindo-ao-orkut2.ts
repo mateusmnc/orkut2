@@ -38,8 +38,12 @@ export class BemVindoAoOrkut2Page {
     this.goToLoginPage();
   }
 
-  createUserFromForm(newUser): User {
-    return new User(null, newUser.name, newUser.email, newUser.password, null);
+  createUserFromForm(newUserForm): User {
+    let newUser:User = new User();
+    newUser.name = newUserForm.name;
+    newUser.email = newUserForm.email;
+    newUser.pwd = newUserForm.password;
+    return newUser;
   }
 
   goToLoginPage(){

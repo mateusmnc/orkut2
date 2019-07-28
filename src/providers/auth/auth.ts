@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { USERS } from '../../mockdata/mock-users';
 import { User } from '../../entities/user';
+import { AngularFireAuth } from '@angular/fire/auth';
 /*
   Generated class for the AuthProvider provider.
 
@@ -10,31 +10,45 @@ import { User } from '../../entities/user';
 @Injectable()
 export class AuthProvider {
 
-  private currentUser: User;
-  // constructor(public http: HttpClient) {
-  constructor() {
-    console.log('Hello AuthProvider Provider');
-  }
+  private user: User;
+
+  constructor(private afAuth: AngularFireAuth) {}
 
   getCurrentUser(){
-    return this.currentUser;
+    return this.user;
   }
+
   login(email: string, senha: string):boolean {
-    this.currentUser = USERS.filter( user => user.email == email && user.senha == senha)[0];
+    // this.user = USERS.filter( user => user.email == email && user.senha == senha)[0];
     
-    if(this.currentUser == null){
+    if(this.user == null){
       return false;
     }
     return true;
   }
 
-  signUp(signUpForm): boolean {
-    if(USERS.filter(user => user.email == signUpForm.email)[0] != null){
-      console.log("já existe, id: " + USERS.filter(user => user.email == signUpForm.email && user.senha == signUpForm.senha)[0].id);
-      return false;
+  async signUp(newUser: User) {
+    this.signUpAtFirebase(newUser).then(response => {
+      console.log(response);
+      
+      if(!response.additionalUserInfo.isNewUser){
+        console.log("user already exists");
+      }
+
+      this.user = new User();
+      this.user.name = newUser.name;
+      this.user.email = response.user.email;
+      this.user.uid = response.user.uid;
+      // this.db.saveNewUser(this.user).then(result =>{});
+    })
+  }
+
+  private async signUpAtFirebase(newUser: User){
+    try{
+      return <firebase.auth.UserCredential> await this.afAuth.auth.createUserWithEmailAndPassword(newUser.email, newUser.pwd);
+    } catch(exception){
+      console.log(exception);
+      return;
     }
-    USERS.push(new User(USERS.length, signUpForm.nome, signUpForm.email, signUpForm.senha, 'assets/img/profile/coragem.jpg'));
-    console.log(USERS);
-    return true;
   }
 }
