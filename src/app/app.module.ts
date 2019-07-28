@@ -18,6 +18,7 @@ import { FIREBASE_CONFIG } from './firebase.config';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth'
+import { DatabaseProvider } from '../providers/database/database';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth'
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthProvider
+    AuthProvider,
+    DatabaseProvider
   ]
 })
 export class AppModule {}
