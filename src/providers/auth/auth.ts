@@ -19,13 +19,21 @@ export class AuthProvider {
     return this.user;
   }
 
-  login(email: string, senha: string):boolean {
+  async login(user: User) {
+
     // this.user = USERS.filter( user => user.email == email && user.senha == senha)[0];
     
-    if(this.user == null){
-      return false;
-    }
+    // if(this. == null){
+      // return false;
+    // }
     return true;
+  }
+  async isUserSignedIn(){
+    if(this.afAuth.auth.currentUser != null){
+      console.log("user is logged in");
+      console.log(this.afAuth.auth)
+      return true;
+    }
   }
 
   async signUp(newUser: User) {
