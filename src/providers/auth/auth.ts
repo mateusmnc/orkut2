@@ -44,10 +44,14 @@ export class AuthProvider {
       .then(
         result =>{
           console.log("user successfully saved:");
-          console.log(result);},
+          console.log(result);
+          return true;
+        },
         error => {
           console.log("User cannot be created")
-          console.log(error);}
+          console.log(error);
+          return false;
+        }
       );
     })
   }
