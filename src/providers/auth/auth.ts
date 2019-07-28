@@ -20,6 +20,10 @@ export class AuthProvider {
     // }
   }
 
+  logout() {
+    this.afAuth.auth.signOut();
+  }
+
   async getCurrentUser(){
     if(!this.isUserSignedIn()){
       this.user = await this.fetchCurrentUser(this.afAuth.auth.currentUser);
