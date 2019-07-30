@@ -19,6 +19,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFireAuthModule } from '@angular/fire/auth'
 import { DatabaseProvider } from '../providers/database/database';
+import { Camera } from '@ionic-native/camera';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { DatabaseProvider } from '../providers/database/database';
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -54,7 +57,8 @@ import { DatabaseProvider } from '../providers/database/database';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
-    DatabaseProvider
+    DatabaseProvider,
+    Camera
   ]
 })
 export class AppModule {}

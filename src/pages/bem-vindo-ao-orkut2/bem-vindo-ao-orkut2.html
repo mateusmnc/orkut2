@@ -11,7 +11,12 @@
 <ion-content padding id="page6">
     <form [formGroup]="signUpForm" id="bemVindoAoOrkut2-form2">
         <div class="spacer" style="height:70px;" id="bemVindoAoOrkut2-spacer3"></div>
-        <ion-list id="bemVindoAoOrkut2-list2">
+        <ion-list id="bemVindoAoOrkut2-list2" no-lines>
+            <ion-item id="bemVindoAoOrkut2-cam" (click)="takeProfilePicture()">
+                <ion-avatar class="image-center">
+                    <img src="{{imagesrc}}" class="image-center" />
+                </ion-avatar>
+            </ion-item>
             <ion-item id="bemVindoAoOrkut2-input3">
                 <ion-label floating>
                     Nome

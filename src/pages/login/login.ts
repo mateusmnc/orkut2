@@ -28,6 +28,7 @@ export class LoginPage {
 
   ionViewDidLoad(){
     if(this.auth.isUserSignedIn()){
+      console.log("User is SignedIn");
       this.auth.loadCurrentUser();
       this.goToTabsControllerPage();
     }
