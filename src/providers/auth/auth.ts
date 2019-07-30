@@ -13,12 +13,7 @@ export class AuthProvider {
 
   private user: User;
 
-  constructor(private afAuth: AngularFireAuth, private db: DatabaseProvider) {
-    // if(this.isUserSignedIn()){
-      // this.fillCurrentUser(this.afAuth.auth.currentUser);
-      // this.user = this.fetchCurrentUser(this.afAuth.auth.currentUser);
-    // }
-  }
+  constructor(private afAuth: AngularFireAuth, private db: DatabaseProvider) {}
 
   logout() {
     this.afAuth.auth.signOut();
@@ -47,27 +42,25 @@ export class AuthProvider {
     }
   }
   
-  async loadCurrentUser(){
-    this.user = await this.fillCurrentUser(this.afAuth.auth.currentUser);
+  loadCurrentUser(){
+    this.fillCurrentUser(this.afAuth.auth.currentUser).then( u => {
+      this.user = u;
+      console.log("user is loaded");
+      console.log(this.user.userId);
+    })
+
   }
 
   async fillCurrentUser(fireUser: firebase.User) {
-    try{
-      console.log("fillCurrenTuser");
-      return await this.db.getUserByUid(fireUser.uid);
-    } catch (e){
-      console.log(e);
-    }
+    return this.db.getUserByUid(fireUser.uid);
   }
 
   isUserSignedIn(){
-    console.log("isUserSignedIn");
-    console.log(this.afAuth.auth.currentUser);
     return this.afAuth.auth.currentUser != null;
   }
 
   async signUp(newUser: User) {
-    this.signUpAtFirebase(newUser).then(userCredential => {
+    return this.signUpAtFirebase(newUser).then(userCredential => {
       console.log(userCredential);
       
       if(!userCredential.additionalUserInfo.isNewUser){
@@ -78,7 +71,8 @@ export class AuthProvider {
       this.user.name = newUser.name;
       this.user.email = userCredential.user.email;
       this.user.uid = userCredential.user.uid;
-      this.db.saveNewUser(this.user)
+      this.user.pic = newUser.pic;
+      return this.db.saveNewUser(this.user)
       .then(
         result =>{
           console.log("user successfully saved:");
