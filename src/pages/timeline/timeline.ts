@@ -25,8 +25,15 @@ export class TimelinePage {
     private db: AngularFireDatabase, 
     private auth: AuthProvider) {
     
+  }
+  
+  ionViewDidLoad(){
+    this.initViewData();
+  }
+  
+  async initViewData() {
     this.postRef = this.db.list('/posts/').valueChanges();
-    this.friendsRef = this.db.list('friends/' + this.auth.getCurrentUser().id).valueChanges();
+    this.friendsRef = this.db.list('friends/' + (await this.auth.getCurrentUser()).userId).valueChanges();
     
     this.friendSubscription = this.friendsRef.subscribe(friendObjects=> {
       let friends = this.loadCurrentFriends(friendObjects);
@@ -35,8 +42,8 @@ export class TimelinePage {
         let flatPosts: Post[] = new Array<Post>();
         Object.keys(userPosts).map(key => userPosts[key]).forEach( postWithKey => {
           Object.keys(postWithKey).map(key => postWithKey[key]).forEach( post => {
-            if(friends.filter(f => f.id == post.communicatorUserId).length > 0) {
-              post.user = friends[friends.findIndex(u => u.id == post.communicatorUserId)];             
+            if(friends.filter(f => f.userId == post.communicatorUserId).length > 0) {
+              post.user = friends[friends.findIndex(u => u.userId == post.communicatorUserId)];             
               flatPosts.push(post);
               this.postList = of(flatPosts);
             }
@@ -45,23 +52,22 @@ export class TimelinePage {
       });
     });
   }
-  
   private loadCurrentFriends(friends): User[] {
     let idList = new Array();
     friends.forEach(friend => idList.push(friend.id));
-    return USERS.filter(ftd => idList.includes(ftd.id));
+    return USERS.filter(ftd => idList.includes(ftd.userId));
   }
 
   share(authorUserId, uuid){
-    this.db
-      .object(`/posts/${authorUserId}/${uuid}`)
-      .valueChanges().subscribe( obj => {
-        obj['communicatorUserId'] = this.auth.getCurrentUser().id;
-        obj['communicatorUserName'] = this.auth.getCurrentUser().nome;
-        this.db
-        .object(`/posts/${this.auth.getCurrentUser().id}/${uuid}`)
-        .set(obj);
-      });
+    // this.db
+    //   .object(`/posts/${authorUserId}/${uuid}`)
+    //   .valueChanges().subscribe( obj => {
+    //     obj['communicatorUserId'] = this.auth.getCurrentUser().id;
+    //     obj['communicatorUserName'] = this.auth.getCurrentUser().nome;
+    //     this.db
+    //     .object(`/posts/${this.auth.getCurrentUser().id}/${uuid}`)
+    //     .set(obj);
+    //   });
   }
 
   goToNovoPostPage(params){

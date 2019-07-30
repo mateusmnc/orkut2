@@ -28,19 +28,23 @@ export class LoginPage {
 
   ionViewDidLoad(){
     if(this.auth.isUserSignedIn()){
+      this.auth.loadCurrentUser();
       this.goToTabsControllerPage();
     }
   }
 
-  login(){
+  async login(){
     if(!this.loginForm.valid){
       return;
     }
 
     let userToLogin = this.buildUserFromForm(this.loginForm.value);
-    if(this.auth.login(userToLogin)){
+
+    if(await this.auth.login(userToLogin)){
+      console.log("login, if->gotoTabasPage()");
       this.goToTabsControllerPage();
     }
+
   }
 
   private buildUserFromForm(loginForm){

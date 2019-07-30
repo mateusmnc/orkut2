@@ -25,14 +25,21 @@ export class NovoPostPage {
     public navCtrl: NavController, 
     private auth: AuthProvider,
     private db: AngularFireDatabase) {
-    this.user = this.auth.getCurrentUser();
+    
+  }
+  ionViewDidLoad(){
+    this.initViewData();
+  }
+
+  async initViewData() {
+    this.user = await this.auth.getCurrentUser();
     
     this.post = new Post();
     this.post.uuid = uuid();
-    this.post.communicatorUserId = this.user.id;
-    this.post.communicatorUserName = this.user.nome;
-    this.post.authorUserId = this.user.id;
-    this.post.authorUserName = this.user.nome;
+    // this.post.communicatorUserId = this.user.userIdid;
+    this.post.communicatorUserName = this.user.name;
+    // this.post.authorUserId = this.user.userId;
+    this.post.authorUserName = this.user.name;
   }
   
   publicarPost(params){
@@ -64,7 +71,7 @@ export class NovoPostPage {
   }
 
   getName(){
-    return this.user.nome;
+    return this.user.name;
   }
   onChange($event){
     this.imgSrc = $event;

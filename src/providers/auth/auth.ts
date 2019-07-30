@@ -25,33 +25,39 @@ export class AuthProvider {
   }
 
   async getCurrentUser(){
-    if(!this.isUserSignedIn()){
-      this.user = await this.fetchCurrentUser(this.afAuth.auth.currentUser);
+    if(this.user == null){
+      this.fillCurrentUser(this.afAuth.auth.currentUser);
     }
     return this.user;
   }
 
   async login(user: User) {
-    let userCredential = await this.afAuth.auth.signInWithEmailAndPassword(user.email, user.pwd);
-    this.user = await this.fetchCurrentUser(userCredential.user);
-        
-    // this.afAuth.auth.signInWithEmailAndPassword(user.email, user.pwd).then(
-    //   userCredential =>{
-    //     this.fillCurrentUser(userCredential.user);
-    //   }, 
-    //   error =>{
-    //     console.log("Error during login");
-    //     console.log(error);
-    //   }
-    // );
 
-  // }
-  // private fillCurrentUser(fireUser: firebase.User) {
-  //   this.user = this.db.getUserByUid(fireUser.uid);
-  // }
+    try {
+      const userCredential = await this.afAuth.auth.signInWithEmailAndPassword(user.email, user.pwd);
+      console.log("userCredential: ");
+      console.log(userCredential.user.uid);
+      this.user = await this.fillCurrentUser(userCredential.user);
+      console.log(this.user);
+      return true;
+    }
+    catch (error) {
+      console.log(error);
+      return false;
+    }
   }
-  private async fetchCurrentUser(fireUser: firebase.User): Promise<User> {
-    return await this.db.getUserByUid(fireUser.uid);
+  
+  async loadCurrentUser(){
+    this.user = await this.fillCurrentUser(this.afAuth.auth.currentUser);
+  }
+
+  async fillCurrentUser(fireUser: firebase.User) {
+    try{
+      console.log("fillCurrenTuser");
+      return await this.db.getUserByUid(fireUser.uid);
+    } catch (e){
+      console.log(e);
+    }
   }
 
   isUserSignedIn(){
