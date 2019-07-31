@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { PesquisarAmigosPage } from '../pesquisar-amigos/pesquisar-amigos';
 import { AuthProvider } from '../../providers/auth/auth';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { User } from '../../entities/user';
 import { DatabaseProvider } from '../../providers/database/database';
 
@@ -20,9 +20,9 @@ export class AmigosPage {
   }
 
   async initViewData() {
-    let user = await this.auth.getCurrentUser();
-    this.db.getUserByUserId(await user.userId);
-    this.db.getFriendsUserIds(await this.auth.getCurrentUser()).subscribe(friends => {
+    let user = this.auth.getCurrentUser();
+    this.db.getUserByUserId(user.userId);
+    this.db.getFriendsUserIds(this.auth.getCurrentUser()).subscribe(friends => {
       this.friendsToDisplay = this.db.getFriendsByUserIds(friends);
     });    
   }

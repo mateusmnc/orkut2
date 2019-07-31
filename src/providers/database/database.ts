@@ -19,10 +19,10 @@ export class DatabaseProvider {
   private friends: AngularFireList<string>;
   friendsSubscription: any;
 
-  constructor(private db: AngularFireDatabase, private storage: AngularFireStorage) {
+  constructor(private db: AngularFireDatabase, private storageRef: AngularFireStorage) {
     this.users = this.db.list<User>('users');
   }
-  
+
   public async saveNewUser(newUser: User){
     let imageData = newUser.pic;
     newUser.pic = '';
@@ -32,7 +32,7 @@ export class DatabaseProvider {
         console.log("user foi criado   " + userCreated.key);
         newUser.userId = userCreated.key;
 
-        this.storage
+        this.storageRef
           .ref(`images/${newUser.userId}/profile.jpg`)
           .putString(imageData, "base64", {contentType: "image/jpg"});
 
@@ -51,18 +51,18 @@ export class DatabaseProvider {
 ///////
   }
 
+  async getProfilePic(user: User) {
+    console.log("text " + user.pic);
+    const imgRef = this.storageRef.storage.ref(user.pic);
+    return await imgRef.getDownloadURL();
+  }
+
   getUserByUid(uid: string) {
     return this.users.valueChanges()
       .pipe(
         map(us => us.filter(u => u.uid === uid)[0]),
-        take(1)).toPromise();
-    // try {
-    //   let userList = await this.users.valueChanges().first().toPromise();
-    //   return userList.filter(usr => usr.uid == uid)[0];  
-    // } catch (e) {
-    //   console.log(e);
-    //   return null;
-    // }
+        take(1))
+      .toPromise();
   }
 
   public getUserByUserId(userId: string): Observable<User> {

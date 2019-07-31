@@ -29,7 +29,8 @@ export class LoginPage {
   ionViewDidLoad(){
     if(this.auth.isUserSignedIn()){
       console.log("User is SignedIn");
-      this.auth.loadCurrentUser();
+      console.log(this.auth.getCurrentAuthUser().email);
+      this.auth.loadCurrentUser(this.auth.getCurrentAuthUser());
       this.goToTabsControllerPage();
     }
   }
@@ -40,10 +41,14 @@ export class LoginPage {
     }
 
     let userToLogin = this.buildUserFromForm(this.loginForm.value);
-
-    if(await this.auth.login(userToLogin)){
-      console.log("login, if->gotoTabasPage()");
-      this.goToTabsControllerPage();
+    try{
+      if(await this.auth.login(userToLogin)){
+        console.log("LOGIN.TS, ASYNC LOGIN, true");
+        this.goToTabsControllerPage();
+      }
+    }catch(e){
+      console.log("LOGIN.TS, ASYNC LOGIN, false");
+      console.log(e);
     }
 
   }

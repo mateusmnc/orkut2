@@ -19,40 +19,46 @@ export class AuthProvider {
     this.afAuth.auth.signOut();
   }
 
-  async getCurrentUser(){
-    if(this.user == null){
-      this.fillCurrentUser(this.afAuth.auth.currentUser);
-    }
-    return this.user;
+  getCurrentUser(){
+    // return this.loadCurrentUser(this.afAuth.auth.currentUser);
   }
 
   async login(user: User) {
 
     try {
       const userCredential = await this.afAuth.auth.signInWithEmailAndPassword(user.email, user.pwd);
-      console.log("userCredential: ");
-      console.log(userCredential.user.uid);
-      this.user = await this.fillCurrentUser(userCredential.user);
-      console.log(this.user);
-      return true;
+      if(userCredential != null){
+        console.log("AUTH.TS, ASYNC LOGIN: login efetuado com sucesso");
+        return true;
+      }
     }
     catch (error) {
+      console.log("AUTH.TS, ASYNC LOGIN: login falhou");
       console.log(error);
       return false;
     }
   }
   
-  loadCurrentUser(){
-    this.fillCurrentUser(this.afAuth.auth.currentUser).then( u => {
-      this.user = u;
-      console.log("user is loaded");
-      console.log(this.user.userId);
-    })
+  async loadCurrentUser(fireUser: firebase.User){
+    try {
+    this.user = await this.db.getUserByUid(fireUser.uid)
+    if(this.user.pic != ''){
+      this.user.picData = await this.db.getProfilePic(this.user);
+    }
+      console.log(this.user.picData);
+      return this.user;
 
+    } catch (error) {
+      console.log("ERROR");
+      console.log(error);
+    }
   }
 
-  async fillCurrentUser(fireUser: firebase.User) {
+  fillCurrentUser(fireUser: firebase.User) {
     return this.db.getUserByUid(fireUser.uid);
+  }
+  getCurrentAuthUser(){
+    return this.afAuth.auth.currentUser;
   }
 
   isUserSignedIn(){

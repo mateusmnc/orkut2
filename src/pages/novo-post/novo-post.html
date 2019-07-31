@@ -12,10 +12,10 @@
     <ion-list>
         <ion-item class="no-padding" no-lines>
             <ion-avatar item-left stacked>
-                <img src="{{getProfilePic()}}" />
+                <img src="{{user?.picData}}" />
             </ion-avatar>
             <ion-label class="black-text" stacked>
-                <h2>{{getName()}}</h2>
+                <h2>{{user?.name}}</h2>
             </ion-label>
             <ion-textarea [(ngModel)]="postText" placeholder="No que está pensando?" rows="5" style="border-style: none"></ion-textarea>
         </ion-item>

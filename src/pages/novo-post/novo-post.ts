@@ -17,7 +17,7 @@ export class NovoPostPage {
 
   private postText: string;
   private imgSrc: string ='';
-  private user: User;
+  public user: User;
   public postStatusText: string = "compartilhável";
   private postStatus: boolean = true;
   private post: Post;
@@ -32,14 +32,21 @@ export class NovoPostPage {
   }
 
   async initViewData() {
-    this.user = await this.auth.getCurrentUser();
-    
-    this.post = new Post();
-    this.post.uuid = uuid();
-    // this.post.communicatorUserId = this.user.userIdid;
-    this.post.communicatorUserName = this.user.name;
-    // this.post.authorUserId = this.user.userId;
-    this.post.authorUserName = this.user.name;
+    try {
+      this.user = await this.auth.loadCurrentUser(this.auth.getCurrentAuthUser());
+      this.post = new Post();
+      this.post.uuid = uuid();
+      // this.post.communicatorUserId = this.user.userIdid;
+      this.post.communicatorUserName = this.user.name;
+      // this.post.authorUserId = this.user.userId;
+      this.post.authorUserName = this.user.name;
+
+      console.log("NOVO-POST.ts, initViewData");
+      console.log(this.user.name);
+      console.log(this.post.uuid); 
+    } catch (error) {
+      
+    }
   }
   
   publicarPost(params){
@@ -66,13 +73,6 @@ export class NovoPostPage {
     this.navCtrl.setRoot(TabsControllerPage);
   }
 
-  getProfilePic(){
-    return this.user.pic;
-  }
-
-  getName(){
-    return this.user.name;
-  }
   onChange($event){
     this.imgSrc = $event;
   }

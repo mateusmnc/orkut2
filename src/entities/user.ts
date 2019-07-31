@@ -1,3 +1,5 @@
+import { Observable } from "rxjs";
+
 export class User {
   uid?: string;
   userId?: string;
@@ -5,4 +7,5 @@ export class User {
   email: string;
   pwd?: string;
   pic?: string;
+  picData?: Observable<string | null>;
 }
