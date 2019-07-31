@@ -23,7 +23,7 @@ export class PesquisarAmigosPage {
   }
 
   async initViewData() {
-    this.db.getFriendsUserIds(await this.auth.getCurrentUser()).subscribe(friends => {
+    this.db.getFriendsUserIds(this.auth.getCurrentUser()).subscribe(friends => {
       this.db.getUserToBeFriend(friends).subscribe(users => {
         this.friendsToAdd = of(users.filter(user => !(friends.includes(user.userId))));
       });
@@ -31,8 +31,7 @@ export class PesquisarAmigosPage {
   }
 
   async addPerson($event){
-    this.db.addFriend(await this.auth.getCurrentUser(), $event);
-    // this.db.list(`friends/` + (await this.auth.getCurrentUser()).userId).push({id : $event})
+    this.db.addFriend(this.auth.getCurrentUser(), $event);
     console.log("adicionado " + $event);
   }
 }

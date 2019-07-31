@@ -16,9 +16,9 @@
 
             <ion-item color="none" no-lines>
                 <ion-avatar item-left>
-                    <img src="{{p?.user.pic}}" />
+                    <img src="{{p?.user?.picData}}" />
                 </ion-avatar>
-                <h1 style="color:steelblue">{{p?.user.nome}}</h1>
+                <h1 style="color:steelblue">{{p?.user.name}}</h1>
                 <label style="color:steelblue" text-wrap>{{p?.text}}</label>
             </ion-item>
             <div *ngIf="p?.img != '' ">

@@ -32,25 +32,25 @@ export class TimelinePage {
   }
   
   async initViewData() {
-    this.postRef = this.db.list('/posts/').valueChanges();
-    this.friendsRef = this.db.list('friends/' + (await this.auth.getCurrentUser()).userId).valueChanges();
+    // this.postRef = this.db.list('/posts/').valueChanges();
+    // this.friendsRef = this.db.list('friends/' + this.auth.getCurrentUser().userId).valueChanges();
     
-    this.friendSubscription = this.friendsRef.subscribe(friendObjects=> {
-      let friends = this.loadCurrentFriends(friendObjects);
+    // this.friendSubscription = this.friendsRef.subscribe(friendObjects=> {
+    //   let friends = this.loadCurrentFriends(friendObjects);
 
-      this.postSubscription = this.postRef.subscribe(userPosts => {
-        let flatPosts: Post[] = new Array<Post>();
-        Object.keys(userPosts).map(key => userPosts[key]).forEach( postWithKey => {
-          Object.keys(postWithKey).map(key => postWithKey[key]).forEach( post => {
-            if(friends.filter(f => f.userId == post.communicatorUserId).length > 0) {
-              post.user = friends[friends.findIndex(u => u.userId == post.communicatorUserId)];             
-              flatPosts.push(post);
-              this.postList = of(flatPosts);
-            }
-          });
-        });
-      });
-    });
+    //   this.postSubscription = this.postRef.subscribe(userPosts => {
+    //     let flatPosts: Post[] = new Array<Post>();
+    //     Object.keys(userPosts).map(key => userPosts[key]).forEach( postWithKey => {
+    //       Object.keys(postWithKey).map(key => postWithKey[key]).forEach( post => {
+    //         if(friends.filter(f => f.userId == post.communicatorUserId).length > 0) {
+    //           post.user = friends[friends.findIndex(u => u.userId == post.communicatorUserId)];             
+    //           flatPosts.push(post);
+    //           this.postList = of(flatPosts);
+    //         }
+    //       });
+    //     });
+    //   });
+    // });
   }
   private loadCurrentFriends(friends): User[] {
     let idList = new Array();
