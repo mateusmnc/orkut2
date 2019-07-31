@@ -1,11 +1,12 @@
 export class Post {
     uuid: string;
-    communicatorUserId: number;
+    communicatorUserId: string;
     communicatorUserName: string;
-    authorUserId: number;
+    authorUserId: string;
     authorUserName: string;
     text: string;
     img: string;
+    imgPath: string;
     visibility: boolean;
     timestamp: number;
 }

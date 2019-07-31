@@ -5,7 +5,8 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { User } from '../../entities/user';
 import { Post } from '../../entities/post';
 import { v4 as uuid } from 'uuid';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { DatabaseProvider } from '../../providers/database/database';
 
 @Component({
   selector: 'page-novo-post',
@@ -21,10 +22,13 @@ export class NovoPostPage {
   public postStatusText: string = "compartilhável";
   private postStatus: boolean = true;
   private post: Post;
+  imageData: any;
+
   constructor(
     public navCtrl: NavController, 
     private auth: AuthProvider,
-    private db: AngularFireDatabase) {
+    private db: DatabaseProvider,
+    private camera: Camera) {
     
   }
   ionViewDidLoad(){
@@ -36,35 +40,38 @@ export class NovoPostPage {
       this.user = await this.auth.loadCurrentUser(this.auth.getCurrentAuthUser());
       this.post = new Post();
       this.post.uuid = uuid();
-      // this.post.communicatorUserId = this.user.userIdid;
+      this.post.communicatorUserId = this.user.userId;
       this.post.communicatorUserName = this.user.name;
-      // this.post.authorUserId = this.user.userId;
+      this.post.authorUserId = this.user.userId;
       this.post.authorUserName = this.user.name;
 
       console.log("NOVO-POST.ts, initViewData");
-      console.log(this.user.name);
-      console.log(this.post.uuid); 
     } catch (error) {
       
     }
   }
   
-  publicarPost(params){
+  async publicarPost(params){
     if (!params) params = {};
     
     this.buildPost();
-    
-    const itemRef = this.db.object(`posts/${this.post.communicatorUserId}/${this.post.uuid}`);
-    itemRef.set(this.post);
-    this.goToTimelinePage(params);
-
+    try {
+      await this.db.saveNewPost(this.post);
+      // const itemRef = await this.db.object(`posts/${this.post.communicatorUserId}/${this.post.uuid}`);
+      // await itemRef.set(this.post);
+      await this.db.saveImage(this.post, this.imageData);
+      this.goToTimelinePage(params);
+    } catch (error) {
+      console.log("Nao foi possivel publicar o post");
+      console.log(error);
+    }    
   }
 
   private buildPost() {
     this.post.text = this.postText;
-    this.post.img = this.imgSrc;
     this.post.visibility = this.postStatus;
     this.post.timestamp = Date.now();
+    this.post.imgPath = 'images/posts/' + this.post.authorUserId + '/' + this.post.uuid + '.jpg';
     console.log(this.post);
   }
 
@@ -87,5 +94,18 @@ export class NovoPostPage {
     }
   }
 
+  async addPicture(sourceTypeValue: number){
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      sourceType: sourceTypeValue
+    };
+
+    this.imageData = await this.camera.getPicture(options);
+    this.imgSrc = 'data:image/jpeg;base64,' + this.imageData; 
+  }
   
 }

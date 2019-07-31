@@ -67,6 +67,5 @@ export class BemVindoAoOrkut2Page {
   async takeProfilePicture(){
       this.imageData = await this.camera.getPicture(this.options);
       this.imagesrc = 'data:image/jpeg;base64,' + this.imageData;
-
   }
 }
