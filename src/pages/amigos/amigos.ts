@@ -13,6 +13,7 @@ import { DatabaseProvider } from '../../providers/database/database';
 export class AmigosPage {
   
   friendsToDisplay : Observable<User[]>;
+  user: User;
   constructor(public navCtrl: NavController, private db: DatabaseProvider, private auth:AuthProvider) {}
   
   ionViewDidLoad(){
@@ -20,9 +21,9 @@ export class AmigosPage {
   }
 
   async initViewData() {
-    let user = this.auth.getCurrentUser();
-    this.db.getUserByUserId(user.userId);
-    this.db.getFriendsUserIds(this.auth.getCurrentUser()).subscribe(friends => {
+    this.user = await this.auth.loadCurrentUser(this.auth.getCurrentAuthUser());
+    this.db.getUserByUserId(this.user.userId);
+    this.db.getFriendsUserIds(this.user).subscribe(friends => {
       this.friendsToDisplay = this.db.getFriendsByUserIds(friends);
     });    
   }
@@ -34,6 +35,6 @@ export class AmigosPage {
 
   async removeFriend($event){
     console.log("removeu " + $event);
-    this.db.removeFriend(await this.auth.getCurrentUser(), $event);
+    this.db.removeFriend(this.user, $event);
   }
 }

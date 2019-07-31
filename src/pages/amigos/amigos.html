@@ -15,7 +15,8 @@
         <div *ngFor="let user of friendsToDisplay | async; let i = index">
             <ion-item color="none" id="pesquisarAmigos-list-item19">
                 <ion-avatar item-left>
-                    <img src="{{user?.pic}}" />
+
+                    <img src="{{user?.picData}}" />
                 </ion-avatar>
                 <h2>{{user?.name}}</h2>
                 <button ion-button (click)="removeFriend(user?.userId)" item-right>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
-import { Observable, of} from 'rxjs';
+import { Observable} from 'rxjs';
 import { User } from '../../entities/user';
 import { DatabaseProvider } from '../../providers/database/database';
 
@@ -12,6 +12,7 @@ import { DatabaseProvider } from '../../providers/database/database';
 export class PesquisarAmigosPage {
   
   friendsToAdd : Observable<User[]>;
+  user: User;
 
   constructor(
     public navCtrl: NavController, 
@@ -23,15 +24,14 @@ export class PesquisarAmigosPage {
   }
 
   async initViewData() {
-    this.db.getFriendsUserIds(this.auth.getCurrentUser()).subscribe(friends => {
-      this.db.getUserToBeFriend(friends).subscribe(users => {
-        this.friendsToAdd = of(users.filter(user => !(friends.includes(user.userId))));
-      });
+    this.user = await this.auth.loadCurrentUser(this.auth.getCurrentAuthUser());
+    this.db.getFriendsUserIds(this.user).subscribe(friends => {
+      this.friendsToAdd = this.db.getUserToBeFriend(friends);
     });
   }
 
   async addPerson($event){
-    this.db.addFriend(this.auth.getCurrentUser(), $event);
+    this.db.addFriend(this.user, $event);
     console.log("adicionado " + $event);
   }
 }
