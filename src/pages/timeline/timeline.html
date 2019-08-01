@@ -12,13 +12,13 @@
 </ion-header>
 <ion-content padding id="page2">
     <ion-list id="timeline-list8">
-        <div *ngFor="let p of postList | async; let i = index">
+        <div *ngFor="let p of posts | async; let i = index">
 
             <ion-item color="none" no-lines>
                 <ion-avatar item-left>
                     <img src="{{p?.user?.picData}}" />
                 </ion-avatar>
-                <h1 style="color:steelblue">{{p?.user.name}}</h1>
+                <h1 style="color:steelblue">{{p?.user?.name}}</h1>
                 <label style="color:steelblue" text-wrap>{{p?.text}}</label>
             </ion-item>
             <div *ngIf="p?.img != '' ">

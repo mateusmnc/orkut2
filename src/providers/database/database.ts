@@ -6,7 +6,7 @@ import 'rxjs/add/operator/first';
 import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Post } from '../../entities/post';
-
+import * as _ from "lodash";
 /*
   Generated class for the DatabaseProvider provider.
 
@@ -19,9 +19,11 @@ export class DatabaseProvider {
   private users: AngularFireList<User>;
   private friends: AngularFireList<string>;
   friendsSubscription: any;
+  private posts: AngularFireList<any>;
 
   constructor(private db: AngularFireDatabase, private storageRef: AngularFireStorage) {
     this.users = this.db.list<User>('users');
+    this.posts = this.db.list<any>('posts');
   }
 
   public async saveNewUser(newUser: User){
@@ -52,8 +54,13 @@ export class DatabaseProvider {
   }
 
   async getProfilePic(user: User) {
-    console.log("text " + user.pic);
     const imgRef = this.storageRef.storage.ref(user.pic);
+    return await imgRef.getDownloadURL();
+  }
+
+  async getPostPic(post: Post) {
+    console.log("post pic path: " + post.imgPath);
+    const imgRef = this.storageRef.storage.ref(post.imgPath);
     return await imgRef.getDownloadURL();
   }
 
@@ -70,6 +77,40 @@ export class DatabaseProvider {
       .pipe(
         map(us => us.filter(u => u.userId === userId)[0]),
         take(1));
+  }
+  
+  public getPosts(friends: User[]): Observable<Post[]> {
+
+    let friendsIds = friends.map(user => user.userId);
+
+    return this.posts.valueChanges().pipe(
+      map(usersWithPosts => {
+        return _.values(usersWithPosts);}),
+      map(postIndexes => {
+        let posts: Post[] = new Array();
+
+        postIndexes.forEach(postIndex => {
+          Object.keys(postIndex).forEach(index =>{
+            posts.push(postIndex[index]);
+          })
+        });
+        return posts;}),
+      map(posts =>{
+        return posts.filter((post: Post) => friendsIds.includes(post.communicatorUserId));}),
+      map(posts =>{
+        return posts.map((post: Post) =>{
+          post.user = friends[friends.findIndex(f => f.userId == post.communicatorUserId)];
+          return post;});
+        }),
+      map(posts => {
+        return posts.map((post:Post) => {
+          if(post.imgPath != ''){ 
+            this.getPostPic(post).then( imageUrl =>post.img = imageUrl);
+          }
+          return post;
+        });
+      })
+    );
   }
 
   public getFriendsUserIds(user: User): Observable<string[]> {
@@ -99,10 +140,6 @@ export class DatabaseProvider {
     return this.users.valueChanges().pipe(
       map(users => {
           return users.filter(user => !(friends.includes(user.userId))
-            // if(!(user.userId in friends)){
-            //   return user;
-            // }
-          // }
           );
       }),
       map( users =>{
@@ -116,6 +153,18 @@ export class DatabaseProvider {
         });
       })
     );
+  }
+
+  resharePost(user: User, authorUserId: string, postUuid: string) {
+    this.db.object(`/posts/${authorUserId}/${postUuid}`)
+      .valueChanges()
+      .subscribe( (postToReshare: Post) =>{
+        postToReshare.communicatorUserId = user.userId;
+        postToReshare.communicatorUserName = user.name
+        
+        this.db.object(`/posts/${user.userId}/${postUuid}`)
+          .set(postToReshare);
+      });
   }
 
   public addFriend(user: User, friendUserId: string){
