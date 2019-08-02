@@ -16,7 +16,7 @@ export class AuthProvider {
   constructor(private afAuth: AngularFireAuth, private db: DatabaseProvider) {}
 
   logout() {
-    this.afAuth.auth.signOut();
+    return this.afAuth.auth.signOut();
   }
 
   getCurrentUser(){

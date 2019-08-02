@@ -72,6 +72,14 @@ export class DatabaseProvider {
       .toPromise();
   }
 
+  getUserByEmail(email: string) {
+    return this.users.valueChanges()
+      .pipe(
+        map(us => us.filter(u => u.email === email)[0]),
+        take(1))
+      .toPromise();
+  }
+
   public getUserByUserId(userId: string): Observable<User> {
     return this.users.valueChanges()
       .pipe(
@@ -172,6 +180,12 @@ export class DatabaseProvider {
       this.friends = this.db.list('friends/' + user.userId);
     }
     this.friends.set(friendUserId, friendUserId);
+  }
+
+  public addFriendByEmail(user: User, friendEmail: string){
+    this.getUserByEmail(friendEmail).then( friendFound => {
+      this.addFriend(user, friendFound.userId);
+    })
   }
   
   public removeFriend(user: User, friendUserId: string){

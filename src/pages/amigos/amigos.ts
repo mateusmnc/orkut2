@@ -16,13 +16,14 @@ export class AmigosPage {
   user: User;
   constructor(public navCtrl: NavController, private db: DatabaseProvider, private auth:AuthProvider) {}
   
-  ionViewDidLoad(){
+  ionViewWillEnter(){
     this.initViewData();
   }
 
   async initViewData() {
     this.user = await this.auth.loadCurrentUser(this.auth.getCurrentAuthUser());
-    this.db.getUserByUserId(this.user.userId);
+    console.log("this.user.uid");
+    console.log(this.user.uid);
     this.db.getFriendsUserIds(this.user).subscribe(friends => {
       this.friendsToDisplay = this.db.getFriendsByUserIds(friends);
     });    
