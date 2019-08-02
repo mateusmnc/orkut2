@@ -4,7 +4,7 @@
             Novo post
         </ion-title>
         <ion-buttons end>
-            <button ion-button solid on-click="publicarPost()">publicar</button>
+            <button ion-button on-click="publicarPost()">publicar</button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
@@ -27,10 +27,10 @@
 <ion-footer>
     <ion-toolbar position="bottom">
         <ion-item>
-            <button ion-button large item-left (click)="addPicture(1)"><ion-icon name="camera"></ion-icon></button>
-            <button ion-button large item-left (click)="addPicture(0)"><ion-icon name="image"></ion-icon></button>
+            <button ion-button large color="dark" item-left (click)="addPicture(1)"><ion-icon name="camera"></ion-icon></button>
+            <button ion-button large color="dark" item-left (click)="addPicture(0)"><ion-icon name="image"></ion-icon></button>
             <ion-label large text-right>{{postStatusText}}</ion-label>
-            <ion-toggle slot="start" name="postStatus" checked (ionChange)="changeStatus($event)"></ion-toggle>
+            <ion-toggle slot="start" color="dark" name="postStatus" checked (ionChange)="changeStatus($event)"></ion-toggle>
         </ion-item>
     </ion-toolbar>
 </ion-footer>

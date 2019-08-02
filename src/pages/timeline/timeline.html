@@ -1,7 +1,8 @@
 <ion-header>
     <ion-navbar>
         <ion-buttons left>
-            <button ion-button icon-only solid on-click="logout()">
+            <button ion-button icon-only on-click="logout()">
+
               <ion-icon name="contact"></ion-icon>
           </button>
         </ion-buttons>
@@ -9,7 +10,7 @@
             Timeline
         </ion-title>
         <ion-buttons right>
-            <button ion-button icon-only solid on-click="goToNovoPostPage()">
+            <button ion-button icon-only on-click="goToNovoPostPage()">
               <ion-icon name="text"></ion-icon>
           </button>
         </ion-buttons>
@@ -33,7 +34,7 @@
             </div>
             <div *ngIf="p?.visibility == true">
                 <ion-item no-lines>
-                    <button style="margin-left: 10px" ion-button (click)="share(p?.authorUserId, p?.uuid)" item-left>
+                    <button style="margin-left: 10px" color="dark" ion-button (click)="share(p?.authorUserId, p?.uuid)" item-left>
                         <ion-icon name="share"></ion-icon>
                     </button>
                     <div *ngIf="p?.communicatorUserId != p?.authorUserId" item-right>
