@@ -4,7 +4,7 @@
             Amigos
         </ion-title>
         <ion-buttons end>
-            <button ion-button icon-only solid on-click="goToPesquisarAmigosPage()">
+            <button ion-button icon-only color="dark" on-click="goToPesquisarAmigosPage()">
         <ion-icon name="search"></ion-icon>
       </button>
         </ion-buttons>
@@ -19,7 +19,7 @@
                     <img src="{{user?.picData}}" />
                 </ion-avatar>
                 <h2>{{user?.name}}</h2>
-                <button ion-button (click)="removeFriend(user?.userId)" item-right>
+                <button color="dark" ion-button (click)="removeFriend(user?.userId)" item-right>
                 excluir
             </button>
             </ion-item>

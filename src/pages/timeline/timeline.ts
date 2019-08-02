@@ -29,12 +29,17 @@ export class TimelinePage {
   }
   
   async initViewData() {
+    try{
     this.user = await this.auth.loadCurrentUser(this.auth.getCurrentAuthUser());
     this.db.getFriendsUserIds(this.user).subscribe(friends => {
       this.db.getFriendsByUserIds(friends).subscribe(friendsUsers =>{
         this.posts = this.db.getPosts(friendsUsers);
       });
-    });    
+    }); 
+    }catch(e){
+      console.log("init timeline");
+      console.log(e);
+    }   
   }
 
   share(authorUserId, postUuid){

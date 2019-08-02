@@ -45,12 +45,23 @@ export class DatabaseProvider {
   }
 
   async saveNewPost(post: Post) {
-    const postRef = await this.db.object(`posts/${post.communicatorUserId}/${post.uuid}`);
-    await postRef.set(post);
+    try{
+      const postRef = await this.db.object(`posts/${post.communicatorUserId}/${post.uuid}`);
+      await postRef.set(post);
+    } catch(e){
+      console.log("save new post error");
+      console.log(e);
+    }
   }
 
   async saveImage(post: Post, imageData: any) {
-    this.storageRef.ref(post.imgPath).putString(imageData, "base64", {contentType: "image/jpg"});
+    try{
+      let imgRef = await this.storageRef.ref(post.imgPath);
+      await imgRef.putString(imageData, "base64", {contentType: "image/jpg"});
+    } catch(e){
+      console.log("save image error");
+      console.log(e);
+    }
   }
 
   async getProfilePic(user: User) {
@@ -112,8 +123,10 @@ export class DatabaseProvider {
         }),
       map(posts => {
         return posts.map((post:Post) => {
-          if(post.imgPath != ''){ 
-            this.getPostPic(post).then( imageUrl =>post.img = imageUrl);
+          if(post.imgPath != '' && post.imgPath != undefined){ 
+            this.getPostPic(post)
+            .then( imageUrl =>post.img = imageUrl)
+            .catch( e => {console.log("error when loading posts"); console.log(e);});
           }
           return post;
         });
