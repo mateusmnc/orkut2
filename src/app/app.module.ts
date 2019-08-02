@@ -21,6 +21,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth'
 import { DatabaseProvider } from '../providers/database/database';
 import { Camera } from '@ionic-native/camera';
 import { AngularFireStorageModule } from '@angular/fire/storage';
+import { Contacts } from '@ionic-native/contacts';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthProvider,
     DatabaseProvider,
-    Camera
+    Camera,
+    Contacts
   ]
 })
 export class AppModule {}

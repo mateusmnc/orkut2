@@ -1,29 +1,26 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, App } from 'ionic-angular';
 import { NovoPostPage } from '../novo-post/novo-post';
 import { Post } from '../../entities/post';
-import { Observable, Subscription} from 'rxjs';
+import { Observable} from 'rxjs';
 import { AuthProvider } from '../../providers/auth/auth';
 import { User } from '../../entities/user';
 import { DatabaseProvider } from '../../providers/database/database';
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'page-timeline',
   templateUrl: 'timeline.html'
 })
 export class TimelinePage {
-  postSubscription: Subscription;
   posts: Observable<Post[]>;
-  postRef: Observable<any[]>;
-  friendsRef: Observable<any[]>;
-  friendSubscription: Subscription;
-  myfriends: Observable<User[]>;
   user: User;
   
   constructor(
     public navCtrl: NavController, 
     private db: DatabaseProvider, 
-    private auth: AuthProvider) {
+    private auth: AuthProvider,
+    private app: App) {
     
   }
   
@@ -47,5 +44,11 @@ export class TimelinePage {
   goToNovoPostPage(params){
     if (!params) params = {};
     this.navCtrl.push(NovoPostPage);
+  }
+
+  logout(){
+    this.auth.logout().then( _ => {
+        this.app.getRootNav().setRoot(LoginPage);
+    });
   }
 }
