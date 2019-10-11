@@ -1,10 +1,16 @@
 <ion-header>
     <ion-navbar>
+        <ion-buttons left>
+            <button ion-button icon-only on-click="logout()">
+
+              <ion-icon name="contact"></ion-icon>
+          </button>
+        </ion-buttons>
         <ion-title>
             Timeline
         </ion-title>
-        <ion-buttons end>
-            <button ion-button icon-only solid on-click="goToNovoPostPage()">
+        <ion-buttons right>
+            <button ion-button icon-only on-click="goToNovoPostPage()">
               <ion-icon name="text"></ion-icon>
           </button>
         </ion-buttons>
@@ -12,13 +18,13 @@
 </ion-header>
 <ion-content padding id="page2">
     <ion-list id="timeline-list8">
-        <div *ngFor="let p of postList | async; let i = index">
+        <div *ngFor="let p of posts | async; let i = index">
 
             <ion-item color="none" no-lines>
                 <ion-avatar item-left>
-                    <img src="{{p?.user.pic}}" />
+                    <img src="{{p?.user?.picData}}" />
                 </ion-avatar>
-                <h1 style="color:steelblue">{{p?.user.nome}}</h1>
+                <h1 style="color:steelblue">{{p?.user?.name}}</h1>
                 <label style="color:steelblue" text-wrap>{{p?.text}}</label>
             </ion-item>
             <div *ngIf="p?.img != '' ">
@@ -28,7 +34,7 @@
             </div>
             <div *ngIf="p?.visibility == true">
                 <ion-item no-lines>
-                    <button style="margin-left: 10px" ion-button (click)="share(p?.authorUserId, p?.uuid)" item-left>
+                    <button style="margin-left: 10px" color="dark" ion-button (click)="share(p?.authorUserId, p?.uuid)" item-left>
                         <ion-icon name="share"></ion-icon>
                     </button>
                     <div *ngIf="p?.communicatorUserId != p?.authorUserId" item-right>

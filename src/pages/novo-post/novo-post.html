@@ -4,7 +4,7 @@
             Novo post
         </ion-title>
         <ion-buttons end>
-            <button ion-button solid on-click="publicarPost()">publicar</button>
+            <button ion-button on-click="publicarPost()">publicar</button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
@@ -12,39 +12,25 @@
     <ion-list>
         <ion-item class="no-padding" no-lines>
             <ion-avatar item-left stacked>
-                <img src="{{getProfilePic()}}" />
+                <img src="{{user?.picData}}" />
             </ion-avatar>
             <ion-label class="black-text" stacked>
-                <h2>{{getName()}}</h2>
+                <h2>{{user?.name}}</h2>
             </ion-label>
             <ion-textarea [(ngModel)]="postText" placeholder="No que está pensando?" rows="5" style="border-style: none"></ion-textarea>
         </ion-item>
         <ion-item no-lines>
-            <img src='{{imgSrc}}' style="display:block;width:100%;height:auto;" />
+            <img src='{{imgSrc}}' style="display:block;width:100%;height:auto; border-radius:15px" />
         </ion-item>
     </ion-list>
-    <ion-footer>
-        <ion-toolbar position="bottom">
-            <ion-item>
-                <ion-label text-right>{{postStatusText}}</ion-label>
-                <ion-toggle slot="start" name="postStatus" checked (ionChange)="changeStatus($event)"></ion-toggle>
-            </ion-item>
-            <ion-item>
-                <ion-label>Fotos</ion-label>
-                <ion-select interface="popover" (ionChange)="onChange($event)">
-                    <ion-option value="">Sem imagem</ion-option>
-                    <ion-option value="assets/img/capivara.jpg">Capivara</ion-option>
-                    <ion-option value="assets/img/adeni.jpg">Adenovirus</ion-option>
-                    <ion-option value="assets/img/cavalo.jpg">Cavalo</ion-option>
-                    <ion-option value="assets/img/cerejeira.jpeg">Cerejeira</ion-option>
-                    <ion-option value="assets/img/dna.jpeg">DNA</ion-option>
-                    <ion-option value="assets/img/horta.jpg">Horta</ion-option>
-                    <ion-option value="assets/img/jardimholanda.jpg">Jardim na Holanda</ion-option>
-                    <ion-option value="assets/img/praia.jpg">Praia</ion-option>
-                    <ion-option value="assets/img/saturno.jpg">Saturno</ion-option>
-                    <ion-option value="assets/img/suricato.jpg">Suricato</ion-option>
-                </ion-select>
-            </ion-item>
-        </ion-toolbar>
-    </ion-footer>
 </ion-content>
+<ion-footer>
+    <ion-toolbar position="bottom">
+        <ion-item>
+            <button ion-button large color="dark" item-left (click)="addPicture(1)"><ion-icon name="camera"></ion-icon></button>
+            <button ion-button large color="dark" item-left (click)="addPicture(0)"><ion-icon name="image"></ion-icon></button>
+            <ion-label large text-right>{{postStatusText}}</ion-label>
+            <ion-toggle slot="start" color="dark" name="postStatus" checked (ionChange)="changeStatus($event)"></ion-toggle>
+        </ion-item>
+    </ion-toolbar>
+</ion-footer>

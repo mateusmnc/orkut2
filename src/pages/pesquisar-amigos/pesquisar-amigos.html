@@ -11,13 +11,22 @@
         <div *ngFor="let user of friendsToAdd | async; let i = index">
             <ion-item color="none" id="pesquisarAmigos-list-item19">
                 <ion-avatar item-left>
-                    <img src="{{user?.pic}}" />
+                    <img src="{{user?.picData}}" />
                 </ion-avatar>
-                <h2>{{user?.nome}}</h2>
-                <button ion-button (click)="addPerson(user?.id)" item-right>
+                <h2>{{user?.name}}</h2>
+                <button ion-button color="dark" (click)="addPerson(user?.userId)" item-right>
                     <ion-icon name="person-add"></ion-icon>
                 </button>
             </ion-item>
         </div>
     </ion-list>
 </ion-content>
+<ion-footer>
+    <ion-toolbar position="bottom">
+        <!-- <ion-item> -->
+        <div style="margin: 0 auto; text-align: center;">
+            <button style="margin: 0 auto;" ion-button color="dark" medium item-center icon-end (click)="addFromEmails()">Adicionar dos contatos<ion-icon name="contacts"></ion-icon></button>
+        </div>
+        <!-- </ion-item> -->
+    </ion-toolbar>
+</ion-footer>
