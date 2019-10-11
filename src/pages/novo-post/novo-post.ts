@@ -60,6 +60,7 @@ export class NovoPostPage {
       await this.db.saveNewPost(this.post);
       // const itemRef = await this.db.object(`posts/${this.post.communicatorUserId}/${this.post.uuid}`);
       // await itemRef.set(this.post);
+
       if(this.post.imgPath != '' && this.post.imgPath != undefined){ 
         await this.db.saveImage(this.post, this.imageData);
         this.goToTimelinePage(params);
@@ -77,6 +78,7 @@ export class NovoPostPage {
     this.post.text = this.postText;
     this.post.visibility = this.postStatus;
     this.post.timestamp = Date.now();
+
     if(this.imgSrc != ''){ 
       this.post.imgPath = 'images/posts/' + this.post.authorUserId + '/' + this.post.uuid + '.jpg';
     }

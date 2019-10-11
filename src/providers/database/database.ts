@@ -45,6 +45,7 @@ export class DatabaseProvider {
   }
 
   async saveNewPost(post: Post) {
+
     try{
       const postRef = await this.db.object(`posts/${post.communicatorUserId}/${post.uuid}`);
       await postRef.set(post);

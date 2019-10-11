@@ -29,6 +29,7 @@ export class TimelinePage {
   }
   
   async initViewData() {
+
     try{
     this.user = await this.auth.loadCurrentUser(this.auth.getCurrentAuthUser());
     this.db.getFriendsUserIds(this.user).subscribe(friends => {
