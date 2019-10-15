@@ -5,16 +5,15 @@
 
 ## Guia em portugues no fim da página
 
-## Developed for learning purposes
-
 Inspered in twitter usability it covers the following functionalities:
 
 * login and signup
-* add and remove friends
-* publish new posts
+* add friends one-by-one or by access-rights to device's contacts
+* remove friends
+* publish new posts with taken picture or loaded from galeray
 * share existing posts
 * take picture or load from galeray
-* consume post from timeline
+* consume friends' posts from timeline
 
 ### Pre-requisites
 #### install app dependencies
@@ -46,6 +45,16 @@ Inspered in twitter usability it covers the following functionalities:
 2) enter: ionic cordova run android
 
 ## Guia em português
+
+Inspirado na usabilidade do twitter cobre as seguintes funcionalidades:
+
+* login e cadastro de usuário
+* adicionar amigos um a um ou através da permissão de visualização dos contatos
+* remover amigos
+* publicar novos posts com foto tirada ou carregada da galeria
+* compartilhar posts existentes
+* Tirar foto ou carregar da galeria
+* Consumir posts de amigos a partir da timeline
 
 ### Pre-requisitos:
 #### Instalar dependencias do app:
