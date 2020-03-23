@@ -11,7 +11,8 @@ export class TabsControllerPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
   tab1Root: any = TimelinePage;
-  tab2Root: any = AmigosPage;
+  tab2Root: any = TimelinePage;
+  tab3Root: any = AmigosPage;
   constructor(public navCtrl: NavController) {
   }
   
