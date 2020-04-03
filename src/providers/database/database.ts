@@ -7,6 +7,9 @@ import { map, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Post } from '../../entities/post';
 import * as _ from "lodash";
+import { FactOrFakeRequest } from '../../entities/factOrFakeRequest';
+import { FactOrFake } from '../../entities/FactOrFake';
+
 /*
   Generated class for the DatabaseProvider provider.
 
@@ -15,35 +18,37 @@ import * as _ from "lodash";
 */
 @Injectable()
 export class DatabaseProvider {
-  
+
+  private factsOrFakes: AngularFireList<FactOrFakeRequest>;  
   private users: AngularFireList<User>;
   private friends: AngularFireList<string>;
   friendsSubscription: any;
   private posts: AngularFireList<any>;
-
+  
   constructor(private db: AngularFireDatabase, private storageRef: AngularFireStorage) {
+    this.factsOrFakes = this.db.list<FactOrFakeRequest>('requests');
     this.users = this.db.list<User>('users');
     this.posts = this.db.list<any>('posts');
   }
-
+  
   public async saveNewUser(newUser: User){
     let imageData = newUser.pic;
     newUser.pic = '';
     return this.users
-      .push(newUser)
-      .then(userCreated => {
-        console.log("user foi criado   " + userCreated.key);
-        newUser.userId = userCreated.key;
-
-        this.storageRef
-          .ref(`images/${newUser.userId}/profile.jpg`)
-          .putString(imageData, "base64", {contentType: "image/jpg"});
-
-          newUser.pic = `images/${newUser.userId}/profile.jpg`;
-          return this.users.update(userCreated.key, newUser);
+    .push(newUser)
+    .then(userCreated => {
+      console.log("user foi criado   " + userCreated.key);
+      newUser.userId = userCreated.key;
+      
+      this.storageRef
+      .ref(`images/${newUser.userId}/profile.jpg`)
+      .putString(imageData, "base64", {contentType: "image/jpg"});
+      
+      newUser.pic = `images/${newUser.userId}/profile.jpg`;
+      return this.users.update(userCreated.key, newUser);
     });
   }
-
+  
   async saveNewPost(post: Post) {
     try{
       const postRef = await this.db.object(`posts/${post.communicatorUserId}/${post.uuid}`);
@@ -73,6 +78,27 @@ export class DatabaseProvider {
     console.log("post pic path: " + post.imgPath);
     const imgRef = this.storageRef.storage.ref(post.imgPath);
     return await imgRef.getDownloadURL();
+  }
+
+  async sendFactOrFakeRequest(ffToStore: FactOrFakeRequest){
+    try {
+      const requestRef = await this.db.object(`requests/${ffToStore.uuid}`);
+      //criar um objeto so pra parte de midia, e usar o request só pra gerencar
+      requestRef.set(ffToStore);
+    } catch(e){
+      console.log(e)
+    }
+
+  }
+
+  factOrFakeAlreadyExists(ffToCheck: FactOrFakeRequest){
+    return this.factsOrFakes
+      .valueChanges()
+      .pipe(
+        map(ff => ff.filter( f => f.textHex === ffToCheck.textHex &&
+                                  f.imgHex === ffToCheck.imgHex )[0]),
+        take(1))
+      .toPromise();
   }
 
   getUserByUid(uid: string) {

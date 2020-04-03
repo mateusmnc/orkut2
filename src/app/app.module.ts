@@ -22,6 +22,8 @@ import { DatabaseProvider } from '../providers/database/database';
 import { Camera } from '@ionic-native/camera';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { Contacts } from '@ionic-native/contacts';
+import { FactCheckerPage } from '../pages/fact-checker/fact-checker';
+import { File } from '@ionic-native/file';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { Contacts } from '@ionic-native/contacts';
     LoginPage,
     BemVindoAoOrkut2Page,
     NovoPostPage,
-    PesquisarAmigosPage
+    PesquisarAmigosPage,
+    FactCheckerPage
   ],
   imports: [
     BrowserModule,
@@ -51,7 +54,8 @@ import { Contacts } from '@ionic-native/contacts';
     LoginPage,
     BemVindoAoOrkut2Page,
     NovoPostPage,
-    PesquisarAmigosPage
+    PesquisarAmigosPage,
+    FactCheckerPage
   ],
   providers: [
     StatusBar,
@@ -60,7 +64,8 @@ import { Contacts } from '@ionic-native/contacts';
     AuthProvider,
     DatabaseProvider,
     Camera,
-    Contacts
+    Contacts,
+    File
   ]
 })
 export class AppModule {}
