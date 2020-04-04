@@ -20,7 +20,7 @@ import { v4 as uuid } from 'uuid';
 })
 export class FactCheckerPage {
   private textToCheck: string;
-  public imgSrc: string ='../../assets/img/suricato.jpg';
+  public imgSrc: string ='../../assets/img/add-image.png';
   public toggleNewVerify: boolean = true;
   public answerColor: string = "warning";
   public answer: string = "Em avaliação";

@@ -24,6 +24,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { Contacts } from '@ionic-native/contacts';
 import { FactCheckerPage } from '../pages/fact-checker/fact-checker';
 import { File } from '@ionic-native/file';
+import { FactsAndFakesPage } from '../pages/facts-and-fakes/facts-and-fakes';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { File } from '@ionic-native/file';
     BemVindoAoOrkut2Page,
     NovoPostPage,
     PesquisarAmigosPage,
-    FactCheckerPage
+    FactCheckerPage,
+    FactsAndFakesPage,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +57,8 @@ import { File } from '@ionic-native/file';
     BemVindoAoOrkut2Page,
     NovoPostPage,
     PesquisarAmigosPage,
-    FactCheckerPage
+    FactCheckerPage,
+    FactsAndFakesPage
   ],
   providers: [
     StatusBar,

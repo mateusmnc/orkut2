@@ -18,7 +18,7 @@ import { FactOrFake } from '../../entities/FactOrFake';
 */
 @Injectable()
 export class DatabaseProvider {
-
+  
   private factsOrFakes: AngularFireList<FactOrFakeRequest>;  
   private users: AngularFireList<User>;
   private friends: AngularFireList<string>;
@@ -58,7 +58,7 @@ export class DatabaseProvider {
       console.log(e);
     }
   }
-
+  
   async saveImage(post: Post, imageData: any) {
     try{
       let imgRef = await this.storageRef.ref(post.imgPath);
@@ -68,18 +68,18 @@ export class DatabaseProvider {
       console.log(e);
     }
   }
-
+  
   async getProfilePic(user: User) {
     const imgRef = this.storageRef.storage.ref(user.pic);
     return await imgRef.getDownloadURL();
   }
-
+  
   async getPostPic(post: Post) {
     console.log("post pic path: " + post.imgPath);
     const imgRef = this.storageRef.storage.ref(post.imgPath);
     return await imgRef.getDownloadURL();
   }
-
+  
   async sendFactOrFakeRequest(ffToStore: FactOrFakeRequest){
     try {
       const requestRef = await this.db.object(`requests/${ffToStore.uuid}`);
@@ -88,38 +88,41 @@ export class DatabaseProvider {
     } catch(e){
       console.log(e)
     }
-
+    
   }
-
+  getFactsAndFakes(): Observable<FactOrFakeRequest[]> {
+    return this.factsOrFakes.valueChanges();
+  }
+  
   factOrFakeAlreadyExists(ffToCheck: FactOrFakeRequest){
     return this.factsOrFakes
-      .valueChanges()
-      .pipe(
-        map(ff => ff.filter( f => f.textHex === ffToCheck.textHex &&
-                                  f.imgHex === ffToCheck.imgHex )[0]),
+    .valueChanges()
+    .pipe(
+      map(ff => ff.filter( f => f.textHex === ffToCheck.textHex &&
+        f.imgHex === ffToCheck.imgHex )[0]),
         take(1))
-      .toPromise();
+        .toPromise();
   }
-
-  getUserByUid(uid: string) {
-    return this.users.valueChanges()
-      .pipe(
-        map(us => us.filter(u => u.uid === uid)[0]),
-        take(1))
-      .toPromise();
-  }
-
-  getUserByEmail(email: string) {
-    return this.users.valueChanges()
-      .pipe(
-        map(us => us.filter(u => u.email === email)[0]),
-        take(1))
-      .toPromise();
-  }
-
-  public getUserByUserId(userId: string): Observable<User> {
-    return this.users.valueChanges()
-      .pipe(
+      
+      getUserByUid(uid: string) {
+        return this.users.valueChanges()
+        .pipe(
+          map(us => us.filter(u => u.uid === uid)[0]),
+          take(1))
+          .toPromise();
+        }
+        
+        getUserByEmail(email: string) {
+          return this.users.valueChanges()
+          .pipe(
+            map(us => us.filter(u => u.email === email)[0]),
+            take(1))
+            .toPromise();
+          }
+          
+          public getUserByUserId(userId: string): Observable<User> {
+            return this.users.valueChanges()
+            .pipe(
         map(us => us.filter(u => u.userId === userId)[0]),
         take(1));
   }
