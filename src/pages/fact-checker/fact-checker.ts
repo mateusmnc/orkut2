@@ -20,6 +20,7 @@ import { v4 as uuid } from 'uuid';
 })
 export class FactCheckerPage {
   private textToCheck: string;
+  // public imgSrc: string ='../../assets/img/add-image.png';
   public imgSrc: string ='../../assets/img/add-image.png';
   public toggleNewVerify: boolean = true;
   public answerColor: string = "warning";
@@ -43,6 +44,7 @@ export class FactCheckerPage {
     this.answerColor = "warning";
     this.answer = "Em Avaliação"
     this.textToCheck = "";
+    this.imgSrc = "../../assets/img/add-image.png";
   }
 
   async send(imageToCheckElement){
@@ -54,17 +56,14 @@ export class FactCheckerPage {
     if(this.textToCheck){
       let hashedText = Md5.hashStr(this.textToCheck);
       ffRequest.textHex = hashedText.toString();
-      // ffRequest.text = this.textToCheck;
-      console.log(hashedText);
+      ffRequest.text = this.textToCheck;
     }
 
-    if(imageToCheckElement.src){
-      console.log("imageTocheckSrc");
-      console.log(imageToCheckElement.src);
+    if(this.imgSrc != '../../assets/img/add-image.png'){
       let hashedBlob = Md5.hashStr(imageToCheckElement.src);
       ffRequest.imgHex = hashedBlob.toString();
-      // ffRequest.image = imageToCheckElement.src; 
-      console.log(hashedBlob);
+      ffRequest.imagePath = "images/" + ffRequest.uuid;
+      ffRequest.image = this.imgSrc;
     }
 
     try {
@@ -74,12 +73,9 @@ export class FactCheckerPage {
         this.displayResponse(ffRequest.status);
         this.db.sendFactOrFakeRequest(ffRequest);
       } else {
-        console.log("reached else");
-        console.log(factOrFake.status);
         this.displayResponse(factOrFake.status);
       }
     } catch (error) {
-      console.log("factOrFake - try");
       console.log(error);
     }
 

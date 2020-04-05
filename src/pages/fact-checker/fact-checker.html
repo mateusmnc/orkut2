@@ -20,7 +20,7 @@
             <ion-textarea [(ngModel)]="textToCheck" placeholder="Cole o texto para verificar" rows="3" style="border-style: solid; border-width: 1px; border-radius: 15px;"></ion-textarea>
         </ion-item>
         <ion-item no-lines style="margin-top:50px;">
-            <img #imageFactOrFake src='{{imgSrc}}' (click)="addPicture(0, imageFactOrFake)" style="display:block;width:230px; height:230px; border-radius:15px; margin:0 auto;" />
+            <img #imageFactOrFake src='{{imgSrc}}' (click)="addPicture(0, imageFactOrFake)" style="object-fit:cover;display:block;width:230px; height:230px; border-radius:15px; margin:0 auto;" />
 
             <!-- <img #iamageToCheck [src]="DomSanitizer.bypassSecurityTrustUrl(imgSrc)" style="display:block;width:100%;height:auto; border-radius:15px" /> -->
             <!-- <img #imgeToCheck src='../../assets/img/adeni.jpg' style="display:block;width:100%;height:auto; border-radius:15px" /> -->

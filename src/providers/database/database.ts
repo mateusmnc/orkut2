@@ -3,12 +3,11 @@ import { User } from '../../entities/user';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFireStorage } from '@angular/fire/storage';
 import 'rxjs/add/operator/first';
-import { map, take } from 'rxjs/operators';
+import { map, take, mergeMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Post } from '../../entities/post';
 import * as _ from "lodash";
 import { FactOrFakeRequest } from '../../entities/factOrFakeRequest';
-import { FactOrFake } from '../../entities/FactOrFake';
 
 /*
   Generated class for the DatabaseProvider provider.
@@ -82,18 +81,40 @@ export class DatabaseProvider {
   
   async sendFactOrFakeRequest(ffToStore: FactOrFakeRequest){
     try {
-      const requestRef = await this.db.object(`requests/${ffToStore.uuid}`);
+      if(ffToStore.imagePath != ""){ 
+        const storageRef = this.storageRef.ref(ffToStore.imagePath);
+        await storageRef.putString(ffToStore.image, 'data_url')//imgRef.putString(imageData, "base64", {contentType: "image/jpg"});
+        ffToStore.image = "";
+      }
+      const requestRef = this.db.object(`requests/${ffToStore.uuid}`);
+      await requestRef.set(ffToStore);
       //criar um objeto so pra parte de midia, e usar o request só pra gerencar
-      requestRef.set(ffToStore);
     } catch(e){
       console.log(e)
     }
     
   }
   getFactsAndFakes(): Observable<FactOrFakeRequest[]> {
-    return this.factsOrFakes.valueChanges();
+    return this.factsOrFakes.valueChanges().pipe(
+      mergeMap(async ffs =>{
+        ffs.map(async ff => {
+          if(ff.imagePath != '' && ff.imagePath != undefined){
+            try{
+              ff.image = await this.getFactOrFakeImage(ff.imagePath)
+            } catch(e){
+              console.log(e);
+            }
+          }
+        });
+        return ffs;
+      })
+    );
   }
-  
+  async getFactOrFakeImage(imagePath: string){
+    const imgRef = this.storageRef.ref(imagePath);
+    return imgRef.getDownloadURL().toPromise();
+  }
+
   factOrFakeAlreadyExists(ffToCheck: FactOrFakeRequest){
     return this.factsOrFakes
     .valueChanges()
