@@ -5,6 +5,7 @@ export class FactOrFakeRequest {
     imgHex: string;
     imagePath: string;
     image: string;
+    totalreqs: number;
     status: string;
+    reason: string;
 }
-

@@ -15,12 +15,30 @@
         <div *ngFor="let ff of factsAndFakes | async; let i = index">
             <!-- <div *ngFor="let ff of factsAndFakes; let i = index"> -->
             <ion-item no-lines style="margin-top:20px;">
-                <ion-textarea readonly="true" value="{{ff?.text}}" rows="3" style="border-style: solid; border-width: 1px; border-radius: 15px;"></ion-textarea>
+                <ion-textarea readonly="true" value="{{ff?.text}}" rows="3"></ion-textarea>
             </ion-item>
-            <ion-item text-center text-wrap>
+            <ion-item text-center no-lines text-wrap>
                 <img src='{{ff?.image}}' style="object-fit:cover;display:block;width:230px; height:230px;border-radius:15px; margin:0 auto;" />
-                <ion-badge [color]="getColor(ff.status)">{{ff.status}}</ion-badge>
             </ion-item>
+            <ion-item no-lines text-center text-wrap>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col>
+                            <ion-badge style="margin-top: 15px; font-size: 1.1em;" [color]="getColor(ff?.status)">{{ff?.status}}</ion-badge>
+                        </ion-col>
+                        <ion-col>
+                            <ion-badge style="margin-top: 15px; font-size: 1.11em;">{{ff?.totalreqs}}
+                                <ion-icon style="margin-left: 5px; font-size: 0.9em;" name="git-compare"></ion-icon>
+                            </ion-badge>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+            <ion-item *ngIf="displayReason(ff?.reason)" no-lines text-center text-wrap>
+                <ion-textarea readonly="true" value="{{ff?.reason}}" rows="auto"></ion-textarea>
+            </ion-item>
+            <ion-item></ion-item>
+
         </div>
 
     </ion-list>

@@ -78,9 +78,21 @@ export class DatabaseProvider {
     const imgRef = this.storageRef.storage.ref(post.imgPath);
     return await imgRef.getDownloadURL();
   }
-  
+  async updateCounterOnly(ffToStore: FactOrFakeRequest){
+    try{
+      const requestRef = this.db.object(`requests/${ffToStore.uuid}`);
+      await requestRef.set(ffToStore);
+    } catch (e){
+
+    }
+  }
   async sendFactOrFakeRequest(ffToStore: FactOrFakeRequest){
     try {
+      console.log("sendFactOrFakeRequest");
+      console.log(ffToStore.totalreqs); 
+      console.log(ffToStore.imagePath);
+      console.log(ffToStore.image);
+       
       if(ffToStore.imagePath != ""){ 
         const storageRef = this.storageRef.ref(ffToStore.imagePath);
         await storageRef.putString(ffToStore.image, 'data_url')//imgRef.putString(imageData, "base64", {contentType: "image/jpg"});
@@ -90,7 +102,8 @@ export class DatabaseProvider {
       await requestRef.set(ffToStore);
       //criar um objeto so pra parte de midia, e usar o request só pra gerencar
     } catch(e){
-      console.log(e)
+      console.log("caiu no catch");
+      console.log(e);
     }
     
   }

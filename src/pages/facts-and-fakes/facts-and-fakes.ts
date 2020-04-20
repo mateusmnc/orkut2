@@ -36,7 +36,13 @@ export class FactsAndFakesPage {
     //   this.factsAndFakes.push(newFf);
     // } 
   }
+  displayReason(reason:string){
+    if(reason == "" || reason == undefined){
+      return false;
+    }
 
+    return true;
+  }
   getColor(response: string){
     if(response === "Em Avaliação"){
       return "warning";

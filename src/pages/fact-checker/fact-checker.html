@@ -22,24 +22,25 @@
         <ion-item no-lines style="margin-top:50px;">
             <img #imageFactOrFake src='{{imgSrc}}' (click)="addPicture(0, imageFactOrFake)" style="object-fit:cover;display:block;width:230px; height:230px; border-radius:15px; margin:0 auto;" />
 
-            <!-- <img #iamageToCheck [src]="DomSanitizer.bypassSecurityTrustUrl(imgSrc)" style="display:block;width:100%;height:auto; border-radius:15px" /> -->
-            <!-- <img #imgeToCheck src='../../assets/img/adeni.jpg' style="display:block;width:100%;height:auto; border-radius:15px" /> -->
         </ion-item>
         <ion-item no-lines text-center text-wrap>
 
             <div>
-                <ion-badge *ngIf="!toggleNewVerify" color="{{answerColor}}"> {{answer}} </ion-badge><br>
+                <ion-grid *ngIf="!toggleNewVerify">
+                    <ion-row>
+                        <ion-col>
+                            <ion-badge style="margin-top: 15px; font-size: 1.1em;" color="{{answerColor}}">{{answer}}</ion-badge>
+                        </ion-col>
+                        <ion-col>
+                            <ion-badge style="margin-top: 15px; font-size: 1.11em;">{{totalrequests}}
+                                <ion-icon style="margin-left: 5px; font-size: 0.9em;" name="git-compare"></ion-icon>
+                            </ion-badge>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
                 <button *ngIf="toggleNewVerify" ion-button small color="dark" (click)="send(imageFactOrFake)">Verificar</button>
                 <button *ngIf="!toggleNewVerify" ion-button small color="dark" (click)="newFactChecking()">Nova verificação</button>
             </div>
         </ion-item>
     </ion-list>
 </ion-content>
-<!-- <ion-footer>
-    <ion-toolbar position="bottom">
-        <ion-item>
-            <button ion-button large color="dark" item-left (click)="addPicture(0, imageFactOrFake)"><ion-icon name="image"></ion-icon></button>
-
-        </ion-item>
-    </ion-toolbar>
-</ion-footer> -->

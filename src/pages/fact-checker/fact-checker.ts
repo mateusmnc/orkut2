@@ -27,6 +27,7 @@ export class FactCheckerPage {
   public answer: string = "Em avaliação";
 
   imageData: any;
+  public totalrequests: number;
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -45,6 +46,7 @@ export class FactCheckerPage {
     this.answer = "Em Avaliação"
     this.textToCheck = "";
     this.imgSrc = "../../assets/img/add-image.png";
+    this.totalrequests = 0;
   }
 
   async send(imageToCheckElement){
@@ -67,13 +69,18 @@ export class FactCheckerPage {
     }
 
     try {
-      let factOrFake = await this.db.factOrFakeAlreadyExists(ffRequest);
+      let factOrFake: FactOrFakeRequest = await this.db.factOrFakeAlreadyExists(ffRequest);
       if(!factOrFake){
+        console.log("!factOrFake if")
         ffRequest.status = "Em Avaliação";
-        this.displayResponse(ffRequest.status);
+        ffRequest.totalreqs = 1;
+        this.displayResponse(ffRequest);
         this.db.sendFactOrFakeRequest(ffRequest);
       } else {
-        this.displayResponse(factOrFake.status);
+        console.log("factOrFake else")
+        factOrFake.totalreqs = factOrFake.totalreqs + 1;
+        this.displayResponse(factOrFake);
+        this.db.updateCounterOnly(factOrFake);
       }
     } catch (error) {
       console.log(error);
@@ -82,9 +89,10 @@ export class FactCheckerPage {
     this.toggleNewVerify = !this.toggleNewVerify;
   }
 
-  displayResponse(response : string){
-    this.answer = response;
-    this.answerColor = this.defineAnswerColor(response);
+  displayResponse(response : FactOrFakeRequest){
+    this.answer = response.status;
+    this.answerColor = this.defineAnswerColor(response.status);
+    this.totalrequests = response.totalreqs;
   }
 
   public defineAnswerColor(response : string):string {
